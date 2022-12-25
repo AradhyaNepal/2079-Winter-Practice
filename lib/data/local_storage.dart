@@ -1,1 +1,1 @@
-afd
+class LocalStorage{}

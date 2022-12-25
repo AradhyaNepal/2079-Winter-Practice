@@ -1,1 +1,1 @@
-sf
+class FakeServer{}
