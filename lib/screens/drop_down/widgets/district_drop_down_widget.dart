@@ -10,6 +10,7 @@ class DistrictDropDownWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButton(
+        value: DropDownSelectProvider.nothingSelected,
         items: Provider.of<DropDownSelectProvider>(context).districtDropDown,
         onChanged: (value){
           Provider.of<DropDownSelectProvider>(context,listen: false).selectDistrict(value);
