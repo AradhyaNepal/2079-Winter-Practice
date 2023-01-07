@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:province_district_city_pick/screens/drop_down/provider/dropdown_select_provider.dart';
 
 class ProvinceDropDownWidget extends StatelessWidget {
   const ProvinceDropDownWidget({
@@ -7,6 +9,11 @@ class ProvinceDropDownWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox();
+    return DropdownButton<int>(
+        items: Provider.of<DropDownSelectProvider>(context).provinceDropDown,
+        onChanged: (value){
+          Provider.of<DropDownSelectProvider>(context,listen: false).selectProvince(value);
+        }
+    );
   }
 }

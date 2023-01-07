@@ -10,7 +10,7 @@ class ResultTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      Provider.of<DropDownSelectProvider>(context).displayValue;
+      Provider.of<DropDownSelectProvider>(context).displayValue,
     );
   }
 }
