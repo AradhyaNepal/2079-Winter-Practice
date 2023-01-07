@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d30e2ee4-60cd-4254-bc5b-c188f604bcc3" name="Changes" comment="" />
+    <list default="true" id="d30e2ee4-60cd-4254-bc5b-c188f604bcc3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/lib/screens/drop_down/repository/dropdown_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/drop_down/model/city.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/drop_down/model/city.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/drop_down/model/district.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/drop_down/model/district.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/drop_down/repository/fetch_data.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/drop_down/utils/fake_json.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/drop_down/utils/fake_json.dart" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -32,6 +39,11 @@
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\InterviewPractice\lib\screens\drop_down\utils" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
       <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
@@ -48,5 +60,16 @@
       <updated>1673101668693</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

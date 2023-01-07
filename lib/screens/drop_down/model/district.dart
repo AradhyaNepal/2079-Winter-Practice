@@ -9,4 +9,15 @@ class District{
     required this.cityList,
   });
 
+  factory District.fromMap(Map<String,dynamic> map){
+    return District(
+      name: map["district"],
+      cityList: City.getListOfCity(map["cities"]),
+    );
+  }
+
+  static List<District> getListOfDistrict(List mapList){
+    return mapList.map((e) => District.fromMap(e)).toList();
+  }
+
 }
