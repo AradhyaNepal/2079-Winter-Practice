@@ -1,8 +1,8 @@
 
-class InternetException with Exception{
+class APIException with Exception{
 
   @override
   String toString(){
-    return "Cannot connect to internet";
+    return "API Error XYZ";
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:province_district_city_pick/screens/drop_down/provider/province_district_city_pick_provider.dart';
+import 'package:province_district_city_pick/screens/drop_down/provider/dropdown_fetch_provider.dart';
 import 'package:province_district_city_pick/screens/drop_down/widgets/city_drop_down_widget.dart';
 import 'package:province_district_city_pick/screens/drop_down/widgets/district_drop_down_widget.dart';
 import 'package:province_district_city_pick/screens/drop_down/widgets/province_drop_down_widget.dart';
@@ -14,7 +14,7 @@ class DropDownPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (context)=>ProvinceDistrictCityPickProvider(),
+        create: (context)=>DropDownFetchProvider(),
         child: const _DropDownPageContent()
     );
   }
@@ -33,14 +33,30 @@ class _DropDownPageContent extends StatelessWidget {
       body: SizedBox(
         height: size.height,
         width: size.width,
-        child: Column(
-          children: const [
-            ProvinceDropDownWidget(),
-            DistrictDropDownWidget(),
-            CityDropDownWidget(),
-            ShowResultButtonWidget(),
-            ResultTextWidget(),
-          ],
+        child: Consumer<DropDownFetchProvider>(
+          builder: (context,provider,child) {
+            if(provider.isLoading){
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if(provider.hasError){
+              return Center(
+                child: Text(
+                  provider.errorMessage,
+                ),
+              );
+            }
+            return Column(
+              children: const [
+                ProvinceDropDownWidget(),
+                DistrictDropDownWidget(),
+                CityDropDownWidget(),
+                ShowResultButtonWidget(),
+                ResultTextWidget(),
+              ],
+            );
+          }
         ),
       ),
     );
