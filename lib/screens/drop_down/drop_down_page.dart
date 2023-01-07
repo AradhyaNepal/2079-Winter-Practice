@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:province_district_city_pick/screens/drop_down/provider/dropdown_fetch_provider.dart';
+import 'package:province_district_city_pick/screens/drop_down/provider/dropdown_select_provider.dart';
 import 'package:province_district_city_pick/screens/drop_down/widgets/city_drop_down_widget.dart';
 import 'package:province_district_city_pick/screens/drop_down/widgets/district_drop_down_widget.dart';
 import 'package:province_district_city_pick/screens/drop_down/widgets/province_drop_down_widget.dart';
@@ -30,6 +31,9 @@ class _DropDownPageContent extends StatelessWidget {
 
     final size=MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("DropDowns"),
+      ),
       body: SizedBox(
         height: size.height,
         width: size.width,
@@ -47,14 +51,19 @@ class _DropDownPageContent extends StatelessWidget {
                 ),
               );
             }
-            return Column(
-              children: const [
-                ProvinceDropDownWidget(),
-                DistrictDropDownWidget(),
-                CityDropDownWidget(),
-                ShowResultButtonWidget(),
-                ResultTextWidget(),
-              ],
+            return ChangeNotifierProvider(
+              create: (context)=>DropDownSelectProvider(
+                  provinceList: provider.provinceList,
+              ),
+              child: Column(
+                children: const [
+                  ProvinceDropDownWidget(),
+                  DistrictDropDownWidget(),
+                  CityDropDownWidget(),
+                  ShowResultButtonWidget(),
+                  ResultTextWidget(),
+                ],
+              ),
             );
           }
         ),

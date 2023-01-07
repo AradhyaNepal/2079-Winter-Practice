@@ -5,10 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d30e2ee4-60cd-4254-bc5b-c188f604bcc3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/lib/constants/exceptions.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/constants/exceptions.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/screens/drop_down/drop_down_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/drop_down/drop_down_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/drop_down/provider/province_district_city_pick_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/drop_down/provider/dropdown_fetch_provider.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/drop_down/repository/dropdown_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/drop_down/repository/dropdown_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/drop_down/model/city.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/drop_down/model/city.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/drop_down/provider/dropdown_fetch_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/drop_down/provider/dropdown_fetch_provider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/drop_down/widgets/result_text_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/drop_down/widgets/result_text_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/drop_down/widgets/show_result_button_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/drop_down/widgets/show_result_button_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +38,7 @@
     <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
