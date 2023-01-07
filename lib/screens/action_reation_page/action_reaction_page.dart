@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_ui_provider/constants/screen_utils_size.dart';
 import 'package:simple_ui_provider/screens/action_reation_page/provider/action_reaction_provider.dart';
 import 'package:simple_ui_provider/screens/action_reation_page/widgets/action_widget_one.dart';
 import 'package:simple_ui_provider/screens/action_reation_page/widgets/action_widget_two.dart';
@@ -12,7 +14,7 @@ class ActionReactionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
+    return ChangeNotifierProvider(
       create: (context)=>ActionReactionProvider(),
       child: const _ActionReactionContent(),
     );
@@ -26,14 +28,21 @@ class _ActionReactionContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: const[
-          ActionWidgetOne(),
-          ActionWidgetTwo(),
-          ReactionWidgetOne(),
-          ReactionWidgetTwo(),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        body: SizedBox(
+          height: KScreenUtilsSize.height.h,
+          width: KScreenUtilsSize.width.w,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const[
+              ActionWidgetOne(),
+              ActionWidgetTwo(),
+              ReactionWidgetOne(),
+              ReactionWidgetTwo(),
+            ],
+          ),
+        ),
       ),
     );
   }
