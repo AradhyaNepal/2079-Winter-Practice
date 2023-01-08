@@ -9,9 +9,10 @@ class CityDropDownWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider=Provider.of<DropDownSelectProvider>(context);
     return DropdownButton(
-        value: DropDownSelectProvider.nothingSelected,
-        items: Provider.of<DropDownSelectProvider>(context).cityDropDown,
+        value: provider.selectedCityIndex,
+        items: provider.cityDropDown,
         onChanged: (value){
           Provider.of<DropDownSelectProvider>(context,listen: false).selectCity(value);
         }

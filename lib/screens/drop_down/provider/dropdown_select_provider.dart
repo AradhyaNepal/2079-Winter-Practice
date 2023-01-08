@@ -59,8 +59,8 @@ class DropDownSelectProvider with ChangeNotifier{
   }
 
   List<District> get districtList {
-    if(selectedDistrictIndex==-1)return [];
-    return _provinceList[selectedDistrictIndex].districtList;
+    if(selectedProvinceIndex==-1)return [];
+    return _provinceList[selectedProvinceIndex].districtList;
   }
 
   List<DropdownMenuItem<int>> get cityDropDown{
@@ -82,8 +82,8 @@ class DropDownSelectProvider with ChangeNotifier{
   }
 
   List<City> get cityList {
-    if(selectedCityIndex==-1)return[];
-    return districtList[selectedCityIndex].cityList;
+    if(selectedDistrictIndex==-1)return[];
+    return districtList[selectedDistrictIndex].cityList;
   }
 
   DropDownSelectProvider({required List<Province> provinceList}):_provinceList=provinceList;
