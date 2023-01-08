@@ -9,7 +9,7 @@ A simple App to practice State Management
 
 [To Download](https://github.com/AradhyaNepal/InterviewPractice/releases/tag/Practice-1)
 
-[To View](https://github.com/AradhyaNepal/InterviewPractice/tree/c7dbf5071ff0ca27ceda072983908981a0e653c0)
+[To View](/'Province District City Dropdown')
 
 ### 2. complex_ui_animation_stack_transform
 
