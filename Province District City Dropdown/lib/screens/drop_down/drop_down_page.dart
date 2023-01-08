@@ -56,6 +56,7 @@ class _DropDownPageContent extends StatelessWidget {
                   provinceList: provider.provinceList,
               ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   ProvinceDropDownWidget(),
                   DistrictDropDownWidget(),

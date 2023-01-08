@@ -40,6 +40,7 @@ class DropDownSelectProvider with ChangeNotifier{
   }
 
   List<DropdownMenuItem<int>> get districtDropDown{
+    if(selectedProvinceIndex==-1)return [];
     List<DropdownMenuItem<int>> list=[
       const DropdownMenuItem<int>(
         value: nothingSelected,
@@ -59,11 +60,11 @@ class DropDownSelectProvider with ChangeNotifier{
   }
 
   List<District> get districtList {
-    if(selectedProvinceIndex==-1)return [];
     return _provinceList[selectedProvinceIndex].districtList;
   }
 
   List<DropdownMenuItem<int>> get cityDropDown{
+    if(selectedDistrictIndex==-1)return[];
     List<DropdownMenuItem<int>> list=[
       const DropdownMenuItem<int>(
         value: nothingSelected,
@@ -82,7 +83,6 @@ class DropDownSelectProvider with ChangeNotifier{
   }
 
   List<City> get cityList {
-    if(selectedDistrictIndex==-1)return[];
     return districtList[selectedDistrictIndex].cityList;
   }
 

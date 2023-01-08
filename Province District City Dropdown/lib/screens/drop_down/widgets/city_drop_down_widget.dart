@@ -11,6 +11,7 @@ class CityDropDownWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider=Provider.of<DropDownSelectProvider>(context);
     return DropdownButton(
+        hint: const Text("City Pick"),
         value: provider.selectedCityIndex,
         items: provider.cityDropDown,
         onChanged: (value){

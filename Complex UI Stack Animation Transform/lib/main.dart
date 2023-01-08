@@ -1,3 +1,4 @@
+import 'package:complex_ui_animation_stack_transform/splash_page/splash_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,7 +16,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: SplashPage.route,
+      routes: {
+        SplashPage.route:(context)=>const SplashPage(),
+      },
     );
   }
 }
