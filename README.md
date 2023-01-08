@@ -1,16 +1,15 @@
-# complex_ui_animation_stack_transform
+# Practice
+### 1. Province - District - City Dropdown Pick Using Provider
+In this project, Using a locally saved json at first province, district and city was fetched and saved in models.
+Then proper state management was done for user to pick province and to show district only for that province. 
+Same with city, only selected district's city will be shown. 
 
-Three pillars of making complex UI are animation, stack and transform. So in this project, complex UI was made using provider.
+And at the end user can click view button to see the result. 
+A simple App to practice State Management
+[To Download](https://github.com/AradhyaNepal/InterviewPractice/releases/tag/Practice-1)
 
-## Getting Started
+[To View](https://github.com/AradhyaNepal/InterviewPractice/tree/c7dbf5071ff0ca27ceda072983908981a0e653c0)
 
-This project is a starting point for a Flutter application.
+### 2. complex_ui_animation_stack_transform
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Three pillars of making complex UI are animation, stack and transform. So in this project, complex UI was made with provider state management.
