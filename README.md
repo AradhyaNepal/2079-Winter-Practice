@@ -16,6 +16,6 @@ A simple App to practice State Management
 Three pillars of making complex UI are animation, stack and transform. So in this project, complex UI was made with provider state management.
 [To View](Complex%20UI%20Stack%20Animation%20Transform)
 
-###3. Isolate and Without Any Package Statemanagement
+### 3. Isolate and Without Any Package Statemanagement
 A simple project to practice Isolate. And all the state management is done with no state management package. All the statemanagement is done using flutter foundation provided functionality.
 [To View](Isolate%20With%20No%20Stmg%20Package)
