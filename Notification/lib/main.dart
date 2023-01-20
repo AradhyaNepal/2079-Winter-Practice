@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   //mist not me more than 30 seconds else OS will terminate it.
-
+  await Firebase.initializeApp();
   print("Background Notification");
   sendNotification(message);
   runApp(const MyApp());
@@ -16,13 +16,13 @@ void main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  listenToNotification();
+  forGroundNotification();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await FirebaseMessaging.instance.subscribeToTopic('weather');
   await _setup();
   runApp(const MyApp());
 }
-void listenToNotification()async{
+void forGroundNotification()async{
   await Future.delayed(Duration(seconds: 1));
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   await messaging.requestPermission(
