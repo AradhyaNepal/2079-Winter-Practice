@@ -1,4 +1,4 @@
-Complete Above 10 projects, then only add new project.
+Complete Above 10 projects, then archive this repo, not allowed to add new but allowed to skip few.
 
 1) CICD
 2) Complex UI
