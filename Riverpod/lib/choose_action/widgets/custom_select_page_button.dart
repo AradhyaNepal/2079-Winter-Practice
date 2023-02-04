@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 
 class CustomSelectPageButton extends StatelessWidget {
   final String whichPageToGo;
+  final VoidCallback? extraTaskBeforeGoing;
   const CustomSelectPageButton({
     required this.whichPageToGo,
+    this.extraTaskBeforeGoing,
     Key? key,
   }) : super(key: key);
 
@@ -16,6 +18,9 @@ class CustomSelectPageButton extends StatelessWidget {
       height: 100,
       child: ElevatedButton(
           onPressed: (){
+            if(extraTaskBeforeGoing!=null){
+              extraTaskBeforeGoing!();
+            }
             Navigator.pushNamed(context,whichPageToGo);
           },
           child: Text(

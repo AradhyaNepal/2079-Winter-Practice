@@ -5,6 +5,8 @@ import 'package:riverpod_practice/fake_server_fetch/repository/fake_data.dart';
 class FakeServerRepository{
   Future<List<FakeData>> getData(int length)async{
     await Future.delayed(Duration(seconds: Random().nextInt(3)+1));
+    bool hasError=Random().nextInt(5)==0;
+    if(hasError) throw randomStringGenerator(min: 100, max: 200);
     List<FakeData> fakeData=[];
     for (int i=0;i<length;i++){
       fakeData.add(
@@ -16,7 +18,7 @@ class FakeServerRepository{
           )
       );
     }
-    return [];
+    return fakeData;
   }
 
   String letters="abcdefghijklmnoqrstuvwxys";

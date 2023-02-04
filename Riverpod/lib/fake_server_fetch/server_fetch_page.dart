@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:riverpod_practice/fake_server_fetch/widgets/data_list_widget.dart';
 import 'package:riverpod_practice/fake_server_fetch/widgets/filter_widget.dart';
 
 class ServerFetchPage extends StatelessWidget {
@@ -19,8 +20,12 @@ class ServerFetchPage extends StatelessWidget {
             ),
           ),
           body: Column(
-            children: [
-              const ChooseFilterWidget(),
+            children: const[
+              ChooseFilterWidget(),
+              SizedBox(height: 10,),
+              Expanded(
+                  child:DataListWidget(),
+              ),
             ],
           ),
         ),
