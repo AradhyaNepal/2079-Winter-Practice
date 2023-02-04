@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:riverpod_practice/fake_server_fetch/widgets/filter_widget.dart';
 
 class ServerFetchPage extends StatelessWidget {
   static const String route="/ServerFetch";
@@ -6,6 +7,24 @@ class ServerFetchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    final size=MediaQuery.of(context).size;
+    return SizedBox(
+      height: size.height,
+      width: size.width,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text(
+              "Server Fetch",
+            ),
+          ),
+          body: Column(
+            children: [
+              const ChooseFilterWidget(),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
