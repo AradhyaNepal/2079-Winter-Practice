@@ -10,13 +10,18 @@ class CustomSelectPageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed: (){
-          Navigator.pushNamed(context,whichPageToGo);
-        },
-        child: Text(
-          whichPageToGo,
-        ),
+    return Container(
+      padding: const EdgeInsets.all(10),
+      width: MediaQuery.of(context).size.width,
+      height: 100,
+      child: ElevatedButton(
+          onPressed: (){
+            Navigator.pushNamed(context,whichPageToGo);
+          },
+          child: Text(
+            whichPageToGo,
+          ),
+      ),
     );
   }
 }

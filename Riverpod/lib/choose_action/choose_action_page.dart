@@ -1,8 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:riverpod_practice/choose_action/widgets/custom_select_page_button.dart';
+import 'package:riverpod_practice/counter_page/counter_page.dart';
 
 class ChooseActionPage extends StatelessWidget {
+  static const String route="/";
   const ChooseActionPage({
     Key? key,
   }) : super(key: key);
@@ -20,9 +22,9 @@ class ChooseActionPage extends StatelessWidget {
           ),
           body: SingleChildScrollView(
             child: Column(
-              children: [
+              children: const [
                 CustomSelectPageButton(
-                  whichPageToGo: "",
+                  whichPageToGo: CounterPage.route,
                 ),
               ],
             ),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_practice/counter_page/provider/counter_provider.dart';
+import 'package:riverpod_practice/counter_page/widgets/add_floating_button.dart';
 
 class CounterPage extends StatelessWidget {
+  static const String route="/CounterPage";
   const CounterPage({Key? key}) : super(key: key);
 
   @override
@@ -27,20 +29,4 @@ class CounterPage extends StatelessWidget {
   }
 }
 
-class CustomFloatingActionButton extends ConsumerWidget {
-  const CustomFloatingActionButton({
-    Key? key,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context,WidgetRef ref) {
-    return FloatingActionButton(
-      onPressed: (){
-
-      },
-      child: Icon(
-        Icons.add,
-      ),
-    );
-  }
-}
