@@ -5,6 +5,8 @@ import 'package:riverpod_practice/fake_server_fetch/provider/server_data_provide
 import 'package:riverpod_practice/fake_server_fetch/repository/fake_data.dart';
 import 'package:riverpod_practice/fake_server_fetch/widgets/individual_provider.dart';
 
+import 'delete_dialog_widget.dart';
+
 class IndividualDataWidget extends ConsumerStatefulWidget {
   final FakeData data;
   const IndividualDataWidget({
@@ -20,9 +22,17 @@ class _IndividualDataWidgetState extends ConsumerState<IndividualDataWidget> {
   final titleController=TextEditingController();
   final contentController=TextEditingController();
   final formKey=GlobalKey<FormState>();
+  bool editable=false;
+
+
+  void _getEditable(){
+    editable=ref.watch(individualProviderIsEditable);
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    final editable=ref.watch(individualProviderIsEditable);
+    _getEditable();
     return Padding(
       padding: const EdgeInsets.all(10),
       child: IntrinsicHeight(
@@ -95,6 +105,26 @@ class _IndividualDataWidgetState extends ConsumerState<IndividualDataWidget> {
                   ),
                 )
             ),
+            Expanded(
+                child: GestureDetector(
+                  onTap: () async{
+                    final delete=await showDialog(
+                        context: context,
+                        builder: (context){
+                          return const DeleteDataDialog();
+                        },
+                    );
+                    if(delete==true){
+                      ref.read(localDataProvider.notifier).delete(widget.data.id);
+                      if(!mounted)return;
+                      ScaffoldMessenger.of(context)..removeCurrentSnackBar()..showSnackBar(const SnackBar(content: Text("Deleted")));
+                    }
+                  },
+                  child: const Icon(
+                      Icons.delete,
+                  ),
+                )
+            ),
             editable?const SizedBox():Expanded(
               child: Checkbox(
                 value:ref.watch(localDataProvider.notifier).isChecked(widget.data.id),
@@ -120,3 +150,4 @@ class _IndividualDataWidgetState extends ConsumerState<IndividualDataWidget> {
     super.dispose();
   }
 }
+

@@ -51,6 +51,7 @@ class DataListWidget extends ConsumerWidget {
           itemCount: localValue.length,
           itemBuilder: (context,index){
             return ProviderScope(
+                key: ValueKey(localValue[index].id),
                 overrides: [
                   individualProviderIsEditable.overrideWith((ref) => false),
                 ],
