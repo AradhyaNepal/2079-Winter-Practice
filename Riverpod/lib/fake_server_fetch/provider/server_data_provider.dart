@@ -15,7 +15,6 @@ class LocalTodoState extends StateNotifier<List<FakeData>>{
 
   LocalTodoState(List<FakeData> initialData):super(initialData);
 
-  List<FakeData> get list=>state;
 
   bool isChecked(int id){
     try{

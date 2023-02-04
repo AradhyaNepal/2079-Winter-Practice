@@ -12,7 +12,7 @@ final filterProvider=StateProvider<SelectedFilter>((ref) => SelectedFilter.all);
 
 
 final filterDataProvider=Provider<List<FakeData>>((ref){
-  final localData=ref.watch(localDataProvider.notifier).list;
+  final localData=ref.watch(localDataProvider) as List<FakeData>;
   final selectedFilter=ref.watch(filterProvider);
   switch(selectedFilter){
     case SelectedFilter.checked:

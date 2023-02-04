@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_practice/fake_server_fetch/provider/filter_data_provider.dart';
 import 'package:riverpod_practice/fake_server_fetch/provider/server_data_provider.dart';
 import 'package:riverpod_practice/fake_server_fetch/widgets/individual_data_widget.dart';
+import 'package:riverpod_practice/fake_server_fetch/widgets/individual_provider.dart';
 
 class DataListWidget extends ConsumerWidget {
   const DataListWidget({
@@ -34,6 +35,13 @@ class DataListWidget extends ConsumerWidget {
       );
     }else{
       final localValue=ref.watch(filterDataProvider);
+      if(localValue.isEmpty){
+        return const Center(
+          child: Text(
+            "No Data available"
+          ),
+        );
+      }
       return RefreshIndicator(
         onRefresh: ()async{
           ref.invalidate(serverDataProvider);
@@ -42,7 +50,12 @@ class DataListWidget extends ConsumerWidget {
         child: ListView.builder(
           itemCount: localValue.length,
           itemBuilder: (context,index){
-            return IndividualDataWidget(data: localValue[index],);
+            return ProviderScope(
+                overrides: [
+                  individualProviderIsEditable.overrideWith((ref) => false),
+                ],
+                child: IndividualDataWidget(data: localValue[index],)
+            );
           },
         ),
       );
