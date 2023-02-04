@@ -12,6 +12,7 @@ class FakeServerRepository{
               id: i+1,
               title: randomStringGenerator(min:4,max:8),
               content: randomStringGenerator(min:20,max:50),
+              checked: Random().nextBool(),
           )
       );
     }
