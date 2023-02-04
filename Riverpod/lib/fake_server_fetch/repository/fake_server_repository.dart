@@ -28,7 +28,7 @@ class FakeServerRepository{
     int length=Random().nextInt(max)+min;
     for (int i=0;i<length;i++){
       String randomLetter=letters[Random().nextInt(letters.length)];
-      String randomNumber=letters[Random().nextInt(letters.length)];
+      String randomNumber=numbers[Random().nextInt(numbers.length)];
       bool chooseNumber=i!=0 && Random().nextInt(min)==0;
       bool addSpace=i!=0 && Random().nextInt(min*2)==0;
       value+=addSpace?" ":"";

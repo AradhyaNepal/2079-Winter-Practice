@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_practice/fake_server_fetch/provider/filter_data_provider.dart';
 import 'package:riverpod_practice/fake_server_fetch/provider/server_data_provider.dart';
 import 'package:riverpod_practice/fake_server_fetch/widgets/individual_data_widget.dart';
 
@@ -11,36 +12,37 @@ class DataListWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context,WidgetRef ref) {
-    final data=ref.watch(serverDataProvider);
-    if(data.isLoading){
+    final serverStatus=ref.watch(serverDataProvider);
+    if(serverStatus.isLoading){
       return const Center(
         child: CircularProgressIndicator(),
       );
     }
-    else if(data.hasError){
+    else if(serverStatus.hasError){
       // ignore: avoid_print
-      print(data.stackTrace.toString());
+      print(serverStatus.stackTrace.toString());
       return Center(
         child: TextButton(
           onPressed: (){
             ref.invalidate(serverDataProvider);
           },
           child: Text(
-            "${data.error} \nTap To Load Again!",
+            "${serverStatus.error} \nTap To Load Again!",
             textAlign: TextAlign.center,
           ),
         ),
       );
     }else{
-      final value=data.value??[];
+      final localValue=ref.watch(filterDataProvider);
       return RefreshIndicator(
         onRefresh: ()async{
           ref.invalidate(serverDataProvider);
+          ref.read(filterProvider.notifier).state=SelectedFilter.all;
         },
         child: ListView.builder(
-          itemCount: value.length,
+          itemCount: localValue.length,
           itemBuilder: (context,index){
-            return IndividualDataWidget(data: value[index],);
+            return IndividualDataWidget(data: localValue[index],);
           },
         ),
       );
