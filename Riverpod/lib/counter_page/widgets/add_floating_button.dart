@@ -9,13 +9,50 @@ class CustomFloatingActionButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context,WidgetRef ref) {
-    return FloatingActionButton(
-      onPressed: (){
-        ref.read(counterProvider.notifier).state++;
-      },
-      child: const Icon(
-        Icons.add,
-      ),
+    ref.listen(counterProvider, (previous, next) {
+      if(next==10 && (previous??0)<10){
+        ScaffoldMessenger.of(context)..removeCurrentSnackBar()..showSnackBar(const SnackBar(content: Text("Value Too High")));
+      }else if(next==-10 && (previous??0)>-10){
+        ScaffoldMessenger.of(context)..removeCurrentSnackBar()..showSnackBar(const SnackBar(content: Text("Value Too Low")));
+      }
+    });
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        FloatingActionButton(
+          onPressed: (){
+            ref.read(counterProvider.notifier).update((state){
+              if(state<20){
+                return ++state;
+              }else{
+                ScaffoldMessenger.of(context)..removeCurrentSnackBar()..showSnackBar(const SnackBar(content: Text("Cannot go further up")));
+                return state;
+              }
+
+            });
+          },
+          child: const Icon(
+            Icons.add,
+          ),
+        ),
+        const SizedBox(width: 20,),
+        FloatingActionButton(
+          onPressed: (){
+            ref.read(counterProvider.notifier).update((state) {
+              if(state>-20){
+                return --state;
+              }else{
+                ScaffoldMessenger.of(context)..removeCurrentSnackBar()..showSnackBar(const SnackBar(content: Text("Cannot go further low")));
+                return state;
+              }
+            });
+          },
+          child: const Icon(
+            Icons.remove,
+          ),
+        ),
+
+      ],
     );
   }
 }

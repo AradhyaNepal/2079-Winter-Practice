@@ -17,8 +17,15 @@ class CounterPage extends StatelessWidget {
         body: Center(
           child: Consumer(
             builder: (context,ref,child) {
+              int value=ref.watch(counterProvider);
+              bool inDangerZone=value<=-10 || value>=10;
               return Text(
-                ref.watch(stringCounterProvider)
+                  value.toString(),
+                style: inDangerZone?
+                const TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold
+                ):null,
               );
             }
           ),
