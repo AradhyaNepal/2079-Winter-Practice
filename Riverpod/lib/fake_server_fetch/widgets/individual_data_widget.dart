@@ -78,11 +78,17 @@ class _IndividualDataWidgetState extends ConsumerState<IndividualDataWidget> {
                             content: contentController.text,
                           ),
                         );
+                        titleController.text="";
+                        contentController.text="";
+                      toggleEditable(editable);
                       }
+                    }else{
+                      titleController.text=widget.data.title;
+                      contentController.text=widget.data.content;
+                      toggleEditable(editable);
                     }
-                    titleController.text="";
-                    contentController.text="";
-                    ref.read(individualProviderIsEditable.notifier).state=!editable;
+
+
                   },
                   child: Icon(
                       ref.watch(individualProviderIsEditable)?Icons.done:Icons.edit
@@ -101,6 +107,10 @@ class _IndividualDataWidgetState extends ConsumerState<IndividualDataWidget> {
         ),
       ),
     );
+  }
+
+  void toggleEditable(bool editable) {
+    ref.read(individualProviderIsEditable.notifier).state=!editable;
   }
 
   @override
