@@ -2,8 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_practice/fake_server_fetch/provider/server_data_provider.dart';
+import 'package:riverpod_practice/fake_server_fetch/provider/similar_title_count_provider.dart';
 import 'package:riverpod_practice/fake_server_fetch/repository/fake_data.dart';
-import 'package:riverpod_practice/fake_server_fetch/widgets/individual_provider.dart';
+import 'package:riverpod_practice/fake_server_fetch/provider/individual_provider.dart';
 
 import 'delete_dialog_widget.dart';
 
@@ -73,6 +74,9 @@ class _IndividualDataWidgetState extends ConsumerState<IndividualDataWidget> {
                           :Text(
                         widget.data.content,
                       ),
+                      editable?const SizedBox():Text(
+                        ref.watch(similarTitleCountProvider(widget.data.title),),
+                      )
                     ],
                   ),
                 )

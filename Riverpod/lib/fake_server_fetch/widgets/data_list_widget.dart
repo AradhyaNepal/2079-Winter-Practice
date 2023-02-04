@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_practice/fake_server_fetch/provider/filter_data_provider.dart';
 import 'package:riverpod_practice/fake_server_fetch/provider/server_data_provider.dart';
 import 'package:riverpod_practice/fake_server_fetch/widgets/individual_data_widget.dart';
-import 'package:riverpod_practice/fake_server_fetch/widgets/individual_provider.dart';
+import 'package:riverpod_practice/fake_server_fetch/provider/individual_provider.dart';
 
 class DataListWidget extends ConsumerWidget {
   const DataListWidget({
