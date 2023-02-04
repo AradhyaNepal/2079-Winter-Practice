@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_practice/counter_page/keys_for_test.dart';
 import 'package:riverpod_practice/counter_page/provider/counter_provider.dart';
 import 'package:riverpod_practice/counter_page/widgets/add_floating_button.dart';
 
@@ -14,8 +15,9 @@ class CounterPage extends StatelessWidget {
       height: size.height,
       width: size.width,
       child: Scaffold(
+        key: counterScaffoldKey,
         appBar: AppBar(
-          title: Text("Counter"),
+          title: const Text("Counter"),
         ),
         body: Center(
           child: Consumer(

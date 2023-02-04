@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod_practice/counter_page/counter_page.dart';
+import 'package:riverpod_practice/counter_page/keys_for_test.dart';
 import 'package:riverpod_practice/main.dart';
 
 void main(){
@@ -81,6 +82,70 @@ void main(){
     expect(negativeTenValueTextWidget.style?.fontWeight==FontWeight.bold, isTrue);
     expect(find.byType(SnackBar), findsOneWidget);
     expect(find.descendant(of: find.byType(SnackBar),matching: find.text("Value Too Low")), findsOneWidget);
+  });
+
+  testWidgets("Cannot go beyond 20 with warning test", (tester) async{
+    await tester.pumpWidget(
+      const ProviderScope(
+          child: MaterialApp(home: CounterPage()),
+      ),
+    );
+    expect(find.text("0"), findsOneWidget);
+    expect(find.text("20"), findsNothing);
+    expect(find.text("21"), findsNothing);
+    expect(find.byType(SnackBar), findsNothing);
+    expect(find.descendant(of: find.byType(SnackBar), matching: find.text("Cannot go further up")), findsNothing);
+    await _tapIcon(tester,Icons.add,21);
+    await tester.pump();
+    expect(find.text("0"), findsNothing);
+    expect(find.text("20"), findsOneWidget);
+    expect(find.text("21"), findsNothing);
+    expect(find.byType(SnackBar), findsOneWidget);
+    expect(find.descendant(of: find.byType(SnackBar), matching: find.text("Cannot go further up")), findsOneWidget);
+  });
+
+  testWidgets("Cannot go below 20 with warning test", (tester) async{
+    await tester.pumpWidget(
+      const ProviderScope(
+        child: MaterialApp(home: CounterPage()),
+      ),
+    );
+    expect(find.text("0"), findsOneWidget);
+    expect(find.text("-20"), findsNothing);
+    expect(find.text("-21"), findsNothing);
+    expect(find.byType(SnackBar), findsNothing);
+    expect(find.descendant(of: find.byType(SnackBar), matching: find.text("Cannot go further low")), findsNothing);
+    await _tapIcon(tester,Icons.remove,21);
+    await tester.pump();
+    expect(find.text("0"), findsNothing);
+    expect(find.text("-20"), findsOneWidget);
+    expect(find.text("-21"), findsNothing);
+    expect(find.byType(SnackBar), findsOneWidget);
+    expect(find.descendant(of: find.byType(SnackBar), matching: find.text("Cannot go further low")), findsOneWidget);
+  });
+
+  testWidgets("When user go above 10, and come back to 10, don't show warning that its too high", (tester) async{
+    await tester.pumpWidget(
+      const ProviderScope(
+        child: MaterialApp(home: CounterPage()),
+      ),
+    );
+    expect(find.text("0"), findsOneWidget);
+    expect(find.text("10"), findsNothing);
+    expect(find.text("11"), findsNothing);
+    await _tapIcon(tester,Icons.add,11);
+    await tester.pump();
+    expect(find.descendant(of: find.byType(SnackBar), matching: find.text("Value Too High")), findsOneWidget);
+    counterScaffoldKey.currentState.re
+    expect(find.text("0"), findsNothing);
+    expect(find.text("10"), findsNothing);
+    expect(find.text("11"), findsOneWidget);
+    await _tapIcon(tester,Icons.remove);
+    await tester.pump();
+    expect(find.text("0"), findsNothing);
+    expect(find.text("10"), findsOneWidget);
+    expect(find.text("11"), findsNothing);
+    expect(find.descendant(of: find.byType(SnackBar), matching: find.text("Value Too High")), findsNothing);
   });
   
   
