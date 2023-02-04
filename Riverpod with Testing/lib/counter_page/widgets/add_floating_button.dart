@@ -36,8 +36,8 @@ class CustomFloatingActionButton extends ConsumerWidget {
           ),
         ),
         const SizedBox(width: 20,),
-        FloatingActionButton(
-          onPressed: (){
+        GestureDetector(
+          onTap: (){
             ref.read(counterProvider.notifier).update((state) {
               if(state>-20){
                 return --state;

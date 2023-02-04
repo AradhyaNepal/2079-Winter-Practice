@@ -14,6 +14,9 @@ class CounterPage extends StatelessWidget {
       height: size.height,
       width: size.width,
       child: Scaffold(
+        appBar: AppBar(
+          title: Text("Counter"),
+        ),
         body: Center(
           child: Consumer(
             builder: (context,ref,child) {
