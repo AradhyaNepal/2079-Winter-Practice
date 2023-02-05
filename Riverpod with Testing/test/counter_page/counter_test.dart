@@ -9,13 +9,16 @@ void main(){
   testWidgets("Plus Button Test", (tester) async{
     await tester.pumpWidget(
       const ProviderScope(
-        child: CounterPage(),
+        child: MaterialApp(
+            home: CounterPage()
+        ),
       ),
     );
     expect(find.byIcon(Icons.add), findsOneWidget);
     expect(find.text("0"), findsOneWidget);
     expect(find.text("1"), findsNothing);
     await _tapIcon(tester,Icons.add);
+    await tester.pump();
     expect(find.text("0"), findsNothing);
     expect(find.text("1"), findsOneWidget);
   });
@@ -23,13 +26,14 @@ void main(){
   testWidgets("Minus Button Test", (tester) async{
     await tester.pumpWidget(
       const ProviderScope(
-        child: CounterPage(),
+        child: MaterialApp(home: CounterPage()),
       ),
     );
     expect(find.byIcon(Icons.remove), findsOneWidget);
     expect(find.text("0"), findsOneWidget);
     expect(find.text("-1"), findsNothing);
     await _tapIcon(tester,Icons.remove);
+    await tester.pump();
     expect(find.text("0"), findsNothing);
     expect(find.text("-1"), findsOneWidget);
   });
