@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod_practice/fake_server_fetch/provider/filter_data_provider.dart';
+import 'package:riverpod_practice/fake_server_fetch/provider/server_data_provider.dart';
+import 'package:riverpod_practice/fake_server_fetch/repository/fake_data.dart';
 import 'package:riverpod_practice/fake_server_fetch/server_fetch_page.dart';
 import 'package:riverpod_practice/fake_server_fetch/utils/text_from_enum.dart';
 import 'package:riverpod_practice/main.dart';
@@ -19,18 +21,40 @@ void main(){
     //By default All selected
     _allSelectedTest(tester);
     //Now Checked Selected
-    await tester.tap(find.text(getTextFromEnum(SelectedFilter.checked)));
-    await tester.pump();
+    await _selectCheckedAndPump(tester);
     _checkedSelectedTest(tester);
     //Now Unchecked Selected
-    await tester.tap(find.text(getTextFromEnum(SelectedFilter.unchecked)));
-    await tester.pump();
+    await _selectUncheckedAndPump(tester);
     _uncheckedSelectedTest(tester);
     //Now All Selected Again
-    await tester.tap(find.text(getTextFromEnum(SelectedFilter.all)));
-    await tester.pump();
+    await _selectAllAndPump(tester);
     _allSelectedTest(tester);
     await tester.pumpAndSettle();
+  });
+
+  testWidgets("Checked And UnChecked Button Properly Showing Data", (tester)async{
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          serverDataProvider.overrideWith((ref) => [
+            FakeData(id: 1, title: "One", content: "One Two Three", checked: true),
+            FakeData(id: 2, title: "Two", content: "One Two Three", checked: false),
+          ]),
+        ],
+        child: const MaterialApp(
+          home: ServerFetchPage(),
+        ),
+      )
+    );
+    _allSelectedTest(tester);
+    expect(_haveCheckedValue(tester) && _haveUnCheckedValue(tester), isTrue);
+    await _selectCheckedAndPump(tester);
+    _checkedSelectedTest(tester);
+    expect(_haveCheckedValue(tester), isTrue);
+    await _selectUncheckedAndPump(tester);
+    _uncheckedSelectedTest(tester);
+    expect(_haveUnCheckedValue(tester), isTrue);
+
   });
   
   testWidgets("All Filter checked, when page reloads", (tester)async{
@@ -41,8 +65,7 @@ void main(){
     );
     await _tapServerFetchAndPumpSettle(tester);
     _allSelectedTest(tester);
-    await tester.tap(find.text(getTextFromEnum(SelectedFilter.checked)));
-    await tester.pump();
+    await _selectCheckedAndPump(tester);
     _checkedSelectedTest(tester);
     await _goBackAndPumpSettle(tester);
     await _tapServerFetchAndPumpSettle(tester);
@@ -58,6 +81,34 @@ void main(){
     await _goBackAndPumpSettle(tester);
     await _findLoadingTest(tester);
   });
+}
+
+bool _haveCheckedValue(WidgetTester tester) {
+  return tester.widgetList(find.byType(Checkbox)).where((element){
+    element=element as Checkbox;
+    return element.value==true;
+  }).isNotEmpty;
+}
+bool _haveUnCheckedValue(WidgetTester tester) {
+  return tester.widgetList(find.byType(Checkbox)).where((element){
+    element=element as Checkbox;
+    return element.value==false;
+  }).isNotEmpty;
+}
+
+Future<void> _selectAllAndPump(WidgetTester tester) async {
+   await tester.tap(find.text(getTextFromEnum(SelectedFilter.all)));
+  await tester.pump();
+}
+
+Future<void> _selectUncheckedAndPump(WidgetTester tester) async {
+   await tester.tap(find.text(getTextFromEnum(SelectedFilter.unchecked)));
+  await tester.pump();
+}
+
+Future<void> _selectCheckedAndPump(WidgetTester tester) async {
+  await tester.tap(find.text(getTextFromEnum(SelectedFilter.checked)));
+  await tester.pump();
 }
 
 void _uncheckedSelectedTest(WidgetTester tester) {
