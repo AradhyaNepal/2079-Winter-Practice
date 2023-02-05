@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_practice/fake_server_fetch/provider/filter_data_provider.dart';
+import 'package:riverpod_practice/fake_server_fetch/utils/text_from_enum.dart';
 
 class ChooseFilterWidget extends StatelessWidget {
   const ChooseFilterWidget({
@@ -38,7 +39,7 @@ class _IndividualFilterUnit extends ConsumerWidget {
           ref.read(filterProvider.notifier).state=filterType;
         },
         child: Text(
-            getText,
+          getTextFromEnum(filterType),
           textAlign: TextAlign.center,
           style:selectedFilter==filterType?
           const TextStyle(
@@ -50,14 +51,5 @@ class _IndividualFilterUnit extends ConsumerWidget {
     );
   }
 
-  String get getText{
-    switch(filterType){
-      case SelectedFilter.checked:
-        return "Checked";
-      case SelectedFilter.unchecked:
-        return "UnChecked";
-      case SelectedFilter.all:
-        return "All";
-    }
-  }
+
 }
