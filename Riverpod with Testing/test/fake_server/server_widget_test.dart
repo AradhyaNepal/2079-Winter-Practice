@@ -93,6 +93,109 @@ void main(){
    await _selectUncheckedAndPump(tester);
    expect(find.text("No Data available"), findsNothing);
   });
+
+  testWidgets("Check and Uncheck is working both in UI and Internally, for all filter", (tester) async{
+    final container=ProviderContainer(
+      overrides: [
+        serverDataProvider.overrideWith((ref) => _getFakeData()),
+      ],
+    );
+    await tester.pumpWidget(
+      ProviderScope(
+        parent: container,
+        child: const MaterialApp(
+          home: ServerFetchPage(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(_haveCheckedValue(tester), isTrue);
+    expect(_internallyHaveCheckedList(container), isTrue);
+    await tester.tap(find.byWidget(_getCheckedValue(tester).first));
+    await tester.pumpAndSettle();
+    expect(_haveCheckedValue(tester), isFalse);
+    expect(_internallyHaveCheckedList(container), isFalse);
+    await tester.tap(find.byWidget(_getUnCheckedValue(tester).first));
+    await tester.pumpAndSettle();
+    expect(_haveCheckedValue(tester), isTrue);
+    expect(_internallyHaveCheckedList(container), isTrue);
+    addTearDown(() {
+      container.dispose();
+    });
+  });
+
+  testWidgets("Uncheck and disappear both in UI and Internally, for all checked", (tester) async{
+    final container=ProviderContainer(
+      overrides: [
+        serverDataProvider.overrideWith((ref) => _getFakeData()),
+      ],
+    );
+    final checkedFakeData=container.read(serverDataProvider).value!.where((element) => element.checked==true).first;
+    await tester.pumpWidget(
+      ProviderScope(
+        parent: container,
+        child: const MaterialApp(
+          home: ServerFetchPage(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await _selectCheckedAndPump(tester);
+    expect(find.byKey(ValueKey(checkedFakeData.id)), findsOneWidget);
+    expect(_haveTheChosenElement(container, checkedFakeData.id), isTrue);
+    await tester.tap(
+      find.descendant(of: find.byKey(ValueKey(checkedFakeData.id)), matching: find.byType(Checkbox))
+    );
+    await tester.pumpAndSettle();
+    expect(find.byKey(ValueKey(checkedFakeData.id)), findsNothing);
+    expect(_haveTheChosenElement(container, checkedFakeData.id), isFalse);
+    addTearDown(() {
+      container.dispose();
+    });
+  });
+
+  testWidgets("Check and disappear both in UI and Internally, for all unchecked", (tester) async{
+    final container=ProviderContainer(
+      overrides: [
+        serverDataProvider.overrideWith((ref) => _getFakeData()),
+      ],
+    );
+    final checkedFakeData=container.read(serverDataProvider).value!.where((element) => element.checked==false).first;
+    await tester.pumpWidget(
+      ProviderScope(
+        parent: container,
+        child: const MaterialApp(
+          home: ServerFetchPage(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await _selectUncheckedAndPump(tester);
+    expect(find.byKey(ValueKey(checkedFakeData.id)), findsOneWidget);
+    expect(_haveTheChosenElement(container, checkedFakeData.id), isTrue);
+    await tester.tap(
+        find.descendant(of: find.byKey(ValueKey(checkedFakeData.id)), matching: find.byType(Checkbox))
+    );
+    await tester.pumpAndSettle();
+    expect(find.byKey(ValueKey(checkedFakeData.id)), findsNothing);
+    expect(_haveTheChosenElement(container, checkedFakeData.id), isFalse);
+    addTearDown(() {
+      container.dispose();
+    });
+  });
+  
+  testWidgets("Refresh Loads new Data", (tester) async{
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          serverDataProvider.overrideWith((ref) => _getFakeData())
+        ],
+        child: const MaterialApp(
+          home: ServerFetchPage(),
+        ),
+      )
+    );
+  });
   
   testWidgets("All Filter checked, when page reloads", (tester)async{
     await tester.pumpWidget(
@@ -120,6 +223,10 @@ void main(){
   });
 }
 
+bool _haveTheChosenElement(ProviderContainer container, int id) => container.read(filterDataProvider).where((element) => element.id==id).isNotEmpty;
+
+bool _internallyHaveCheckedList(ProviderContainer container) => (container.read(localDataProvider) as List<FakeData>).where((element) => element.checked==true).isNotEmpty;
+
 List<FakeData> _getFakeData() {
   return [
           FakeData(id: 1, title: "One", content: "One Two Three", checked: true),
@@ -128,16 +235,24 @@ List<FakeData> _getFakeData() {
 }
 
 bool _haveCheckedValue(WidgetTester tester) {
+  return _getCheckedValue(tester).isNotEmpty;
+}
+
+Iterable<Widget> _getCheckedValue(WidgetTester tester) {
   return tester.widgetList(find.byType(Checkbox)).where((element){
-    element=element as Checkbox;
-    return element.value==true;
-  }).isNotEmpty;
+  element=element as Checkbox;
+  return element.value==true;
+});
 }
 bool _haveUnCheckedValue(WidgetTester tester) {
+  return _getUnCheckedValue(tester).isNotEmpty;
+}
+
+Iterable<Widget> _getUnCheckedValue(WidgetTester tester) {
   return tester.widgetList(find.byType(Checkbox)).where((element){
-    element=element as Checkbox;
-    return element.value==false;
-  }).isNotEmpty;
+  element=element as Checkbox;
+  return element.value==false;
+});
 }
 
 Future<void> _selectAllAndPump(WidgetTester tester) async {
