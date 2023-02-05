@@ -36,10 +36,7 @@ void main(){
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          serverDataProvider.overrideWith((ref) => [
-            FakeData(id: 1, title: "One", content: "One Two Three", checked: true),
-            FakeData(id: 2, title: "Two", content: "One Two Three", checked: false),
-          ]),
+          serverDataProvider.overrideWith((ref) => _getFakeData()),
         ],
         child: const MaterialApp(
           home: ServerFetchPage(),
@@ -55,6 +52,46 @@ void main(){
     _uncheckedSelectedTest(tester);
     expect(_haveUnCheckedValue(tester), isTrue);
 
+  });
+
+  testWidgets("No Data Available", (tester)async{
+    await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            serverDataProvider.overrideWith((ref) => []),
+          ],
+          child: const MaterialApp(
+            home: ServerFetchPage(),
+          ),
+        )
+    );
+   await tester.pumpAndSettle();
+   _allSelectedTest(tester);
+   expect(find.text("No Data available"), findsOneWidget);
+   await _selectCheckedAndPump(tester);
+   expect(find.text("No Data available"), findsOneWidget);
+   await _selectUncheckedAndPump(tester);
+   expect(find.text("No Data available"), findsOneWidget);
+  });
+
+  testWidgets("Some Data Available", (tester)async{
+    await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            serverDataProvider.overrideWith((ref) => _getFakeData()),
+          ],
+          child: const MaterialApp(
+            home: ServerFetchPage(),
+          ),
+        )
+    );
+   await tester.pumpAndSettle();
+   _allSelectedTest(tester);
+   expect(find.text("No Data available"), findsNothing);
+   await _selectCheckedAndPump(tester);
+   expect(find.text("No Data available"), findsNothing);
+   await _selectUncheckedAndPump(tester);
+   expect(find.text("No Data available"), findsNothing);
   });
   
   testWidgets("All Filter checked, when page reloads", (tester)async{
@@ -81,6 +118,13 @@ void main(){
     await _goBackAndPumpSettle(tester);
     await _findLoadingTest(tester);
   });
+}
+
+List<FakeData> _getFakeData() {
+  return [
+          FakeData(id: 1, title: "One", content: "One Two Three", checked: true),
+          FakeData(id: 2, title: "Two", content: "One Two Three", checked: false),
+        ];
 }
 
 bool _haveCheckedValue(WidgetTester tester) {
