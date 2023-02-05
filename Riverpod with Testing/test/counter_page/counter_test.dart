@@ -126,8 +126,11 @@ void main(){
 
   testWidgets("When user go above 10, and come back to 10, don't show warning that its too high", (tester) async{
     await tester.pumpWidget(
-      const ProviderScope(
-        child: MaterialApp(home: CounterPage()),
+      ProviderScope(
+        child: MaterialApp(
+            scaffoldMessengerKey: scaffoldMessengerKey,
+            home: const CounterPage()
+        ),
       ),
     );
     expect(find.text("0"), findsOneWidget);
@@ -135,8 +138,10 @@ void main(){
     expect(find.text("11"), findsNothing);
     await _tapIcon(tester,Icons.add,11);
     await tester.pump();
+    expect(find.byType(SnackBar), findsOneWidget);
     expect(find.descendant(of: find.byType(SnackBar), matching: find.text("Value Too High")), findsOneWidget);
-    counterScaffoldKey.currentState.re
+    scaffoldMessengerKey.currentState?.removeCurrentSnackBar();
+    await tester.pump();
     expect(find.text("0"), findsNothing);
     expect(find.text("10"), findsNothing);
     expect(find.text("11"), findsOneWidget);
@@ -145,12 +150,40 @@ void main(){
     expect(find.text("0"), findsNothing);
     expect(find.text("10"), findsOneWidget);
     expect(find.text("11"), findsNothing);
+    expect(find.byType(SnackBar), findsNothing);
     expect(find.descendant(of: find.byType(SnackBar), matching: find.text("Value Too High")), findsNothing);
   });
-  
-  
-  
-  //At last
+
+  testWidgets("When user go below -10, and come back to -10, don't show warning that its too low", (tester) async{
+    await tester.pumpWidget(
+      ProviderScope(
+        child: MaterialApp(
+            scaffoldMessengerKey: scaffoldMessengerKey,
+            home: const CounterPage()
+        ),
+      ),
+    );
+    expect(find.text("0"), findsOneWidget);
+    expect(find.text("-10"), findsNothing);
+    expect(find.text("-11"), findsNothing);
+    await _tapIcon(tester,Icons.remove,11);
+    await tester.pump();
+    expect(find.byType(SnackBar), findsOneWidget);
+    expect(find.descendant(of: find.byType(SnackBar), matching: find.text("Value Too Low")), findsOneWidget);
+    scaffoldMessengerKey.currentState?.removeCurrentSnackBar();
+    await tester.pump();
+    expect(find.text("0"), findsNothing);
+    expect(find.text("-10"), findsNothing);
+    expect(find.text("-11"), findsOneWidget);
+    await _tapIcon(tester,Icons.add);
+    await tester.pump();
+    expect(find.text("0"), findsNothing);
+    expect(find.text("-10"), findsOneWidget);
+    expect(find.text("-11"), findsNothing);
+    expect(find.byType(SnackBar), findsNothing);
+    expect(find.descendant(of: find.byType(SnackBar), matching: find.text("Value Too Low")), findsNothing);
+  });
+
   testWidgets("Counter Reset on Page Reopen Test", (tester) async{
     await tester.pumpWidget(
       const ProviderScope(
