@@ -6,6 +6,8 @@ import 'package:riverpod_practice/fake_server_fetch/provider/server_data_provide
 import 'package:riverpod_practice/fake_server_fetch/repository/fake_data.dart';
 import 'package:riverpod_practice/fake_server_fetch/server_fetch_page.dart';
 import 'package:riverpod_practice/fake_server_fetch/utils/text_from_enum.dart';
+import 'package:riverpod_practice/fake_server_fetch/widgets/data_list_widget.dart';
+import 'package:riverpod_practice/fake_server_fetch/widgets/individual_data_widget.dart';
 import 'package:riverpod_practice/main.dart';
 
 void main(){
@@ -183,18 +185,39 @@ void main(){
       container.dispose();
     });
   });
-  
+
+
+  //Needs mokito because we need to sepeate error scenario and non error scenario, since its unit test
   testWidgets("Refresh Loads new Data", (tester) async{
+    final navigatorKey=GlobalKey<NavigatorState>();
     await tester.pumpWidget(
-      ProviderScope(
-        overrides: [
-          serverDataProvider.overrideWith((ref) => _getFakeData())
-        ],
-        child: const MaterialApp(
-          home: ServerFetchPage(),
-        ),
-      )
+        ProviderScope(
+          child:  MaterialApp(
+            navigatorKey: navigatorKey,
+            routes: {
+              ServerFetchPage.route:(_)=>const ServerFetchPage(),
+            },
+            initialRoute: ServerFetchPage.route,
+          ),
+        )
     );
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    await tester.pumpAndSettle();
+    for(int i=0;i<10;i++){
+      expect(find.byType(CircularProgressIndicator), findsNothing);
+      if(tester.widgetList(find.byType(CustomErrorWidget)).isNotEmpty){
+        await tester.tap(find.byType(CustomErrorWidget));
+        await tester.pump();
+      }else{
+        await tester.fling(find.byType(IndividualDataWidget).first, const Offset(0, 1000),1000);
+        await tester.pump();
+      }
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      await tester.pumpAndSettle();
+      navigatorKey.currentState?.pushReplacementNamed(ServerFetchPage.route);
+      await tester.pumpAndSettle();
+    }
+
   });
   
   testWidgets("All Filter checked, when page reloads", (tester)async{
