@@ -17,7 +17,7 @@ class NotificationSetupController{
           channelKey: channel1,
           channelName: 'Basic notifications',
           channelDescription: 'Notification channel for basic tests',
-          defaultColor: const Color(0xFF9D50DD),
+          defaultColor: Colors.red,
           ledColor: Colors.white,
         ),
       ],
