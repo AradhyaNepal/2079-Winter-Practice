@@ -4,9 +4,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
 
-///Note:
-///You need to use @pragma("vm:entry-point") in each static method to identify
-///to the Flutter engine that the dart address will be called from native and should be preserved.
+
 class NotificationSetupController{
 
   static const String channel1="basic_channel_1";
@@ -35,6 +33,12 @@ class NotificationSetupController{
         onDismissActionReceivedMethod:  NotificationSetupController.onDismissActionReceivedMethod
     );
   }
+
+
+  //Note:
+  //We need to use @pragma("vm:entry-point") in each static method to identify
+  //to the Flutter engine that the dart address will be called from native and should be preserved.
+
 
   /// Use this method to detect when a new notification or a schedule is created
   @pragma("vm:entry-point")

@@ -26,7 +26,6 @@ class ShowNotificationPage extends StatelessWidget {
                     context,
                     title: "123",
                     body: "567",
-                    channelKey: "basic_channel_2"
                 ).createNotification();
               },
               child: const Text(

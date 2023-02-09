@@ -1,5 +1,4 @@
-import 'dart:math';
-import 'package:awesome/utils/local_storage.dart';
+
 import 'package:awesome/utils/notification_setup_controller.dart';
 import 'package:awesome/widgets/open_snack_bar_widget.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
@@ -23,40 +22,36 @@ class NotificationCreateManager{
     this.actionType=ActionType.Default,
   });
   void createNotification() async{
-    if(LocalStorage().haveNotificationPermission()){
+    bool isAllowed= await AwesomeNotifications().isNotificationAllowed();
+    if (!isAllowed) {
+      _userApprovalForPermission();
+    }else{
       _createNotificationAfterHavingPermission();
     }
-    else{
-      _userApprovalAlertForPermission();
+
+  }
+
+  Future<void> _userApprovalForPermission() async {
+     final userSaidOkay=await _showDialogForUserPermission();
+    if(userSaidOkay==true){
+      _userPackageToGetPermission();
+    }else{
+      _showSnackBar(permissionDenied);
     }
   }
 
-  Future<void> _userApprovalAlertForPermission() async {
-     final userSaidOkay=await _showDialogForUserPermission();
-    if(userSaidOkay==true){
-      _userPackageToGrantPackage();
-    }else{
+  Future<void> _userPackageToGetPermission() async {
+    final permissionGiven=await AwesomeNotifications().requestPermissionToSendNotifications();
+    if(permissionGiven){
+      _createNotificationAfterHavingPermission();
+    }
+    else{
       _showSnackBar(permissionDenied);
     }
   }
 
 
 
-  void _userPackageToGrantPackage() async{
-    bool isAllowed= await AwesomeNotifications().isNotificationAllowed();
-    if (!isAllowed) {
-      final permissionGiven=await AwesomeNotifications().requestPermissionToSendNotifications();
-      if(permissionGiven){
-        _createNotificationAfterHavingPermission();
-      }
-      else{
-        _showSnackBar(permissionDenied);
-      }
-      LocalStorage().setHaveNotificationPermission(permissionGiven);
-    }else{
-      _createNotificationAfterHavingPermission();
-    }
-  }
 
   Future<dynamic> _showDialogForUserPermission() async{
     if(!context.mounted)return;
@@ -94,13 +89,29 @@ class NotificationCreateManager{
   void _createNotificationAfterHavingPermission() {
     AwesomeNotifications().createNotification(
         content: NotificationContent(
-            id: Random().nextInt(100000),
+            id: -1, // -1 is replaced by a random number
             channelKey: channelKey,
             title: title,
             body: body,
-            actionType: actionType,
-        )
-    );
+            bigPicture: 'https://storage.googleapis.com/cms-storage-bucket/d406c736e7c4c57f5f61.png',
+            largeIcon: 'https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png',
+            //'asset://assets/images/balloons-in-sky.jpg',
+            notificationLayout: NotificationLayout.BigPicture,
+            payload: {'notificationId': '1234567890'}),
+        actionButtons: [
+          NotificationActionButton(key: 'REDIRECT', label: 'Redirect'),
+          NotificationActionButton(
+              key: 'REPLY',
+              label: 'Reply Message',
+              requireInputText: true,
+              actionType: ActionType.SilentAction
+          ),
+          NotificationActionButton(
+              key: 'DISMISS',
+              label: 'Dismiss',
+              actionType: ActionType.DismissAction,
+              isDangerousOption: true)
+        ]);
     _showSnackBar("Notification Successfully Send");
   }
 

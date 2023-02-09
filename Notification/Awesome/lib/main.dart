@@ -1,12 +1,10 @@
 import 'package:awesome/screens/navigation_cliked_page/navigation_clicked_page.dart';
 import 'package:awesome/screens/show_notification_page/show_notification_page.dart';
-import 'package:awesome/utils/local_storage.dart';
 import 'package:awesome/utils/notification_setup_controller.dart';
 import 'package:flutter/material.dart';
 
 void main() async{
   await NotificationSetupController.initializeAwesomeNotification();
-  await LocalStorage().init();
   runApp(const MyApp());
 }
 
