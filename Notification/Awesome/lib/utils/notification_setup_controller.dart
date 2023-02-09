@@ -56,6 +56,7 @@ class NotificationSetupController{
   @pragma("vm:entry-point")
   static Future <void> onDismissActionReceivedMethod(ReceivedAction receivedAction) async {
     // Your code goes here
+    print(receivedAction.id);
   }
 
   /// Use this method to detect when the user taps on a notification or action button
