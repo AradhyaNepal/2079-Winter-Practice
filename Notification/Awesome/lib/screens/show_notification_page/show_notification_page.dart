@@ -22,7 +22,11 @@ class ShowNotificationPage extends StatelessWidget {
           body: Center(
             child: ElevatedButton(
               onPressed: (){
-                NotificationManager.createNotification();
+                NotificationSender(
+                    context,
+                    title: "Hello",
+                    body: "How Are You!"
+                ).createNotification();
               },
               child: const Text(
                 "Show Notification",

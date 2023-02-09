@@ -1,53 +1,65 @@
-import 'package:awesome/main.dart';
+import 'dart:math';
 import 'package:awesome/widgets/open_snack_bar_widget.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class NotificationManager{
+class NotificationSender{
   static String haveNotificationPermissionKey="haveNotificationPermission";
-  static String askedUserPermissionKey="askedUserPermission";
-  static void createNotification() async{
+
+  final BuildContext context;
+  final String channelKey;
+  final String title;
+  final String body;
+  final ActionType actionType;
+
+  NotificationSender(this.context,{
+    this.channelKey='basic_channel',
+    required this.title,
+    required this.body,
+    this.actionType=ActionType.Default,
+  });
+  void createNotification() async{
     final sharedPreferences=await SharedPreferences.getInstance();
-    bool askedUserPermission=sharedPreferences.getBool(askedUserPermissionKey)??false;
     bool haveNotificationPermission=sharedPreferences.getBool(haveNotificationPermissionKey)??false;
-    if(askedUserPermission){
-      _manageAskedPermissionScenario(haveNotificationPermission);
-    }else{
-      _manageNotAskedPermissionScenario();
+    if(haveNotificationPermission){
+      _createNotificationAfterHavingPermission();
+    }
+    else{
+      _userApprovalAlertForPermission();
     }
   }
 
-  static void _manageNotAskedPermissionScenario() async{
-    final userSaidOkay=await _showDialogForUserPermission();
-    if(userSaidOkay){
+  Future<void> _userApprovalAlertForPermission() async {
+     final userSaidOkay=await _showDialogForUserPermission();
+    if(userSaidOkay==true){
       _userPackageToGrantPackage();
     }else{
       _showSnackBar("Notification Permission Not Granted");
     }
   }
 
-  static void _userPackageToGrantPackage() async{
+
+
+  void _userPackageToGrantPackage() async{
     final sharedPreferences=await SharedPreferences.getInstance();
     bool isAllowed= await AwesomeNotifications().isNotificationAllowed();
     if (!isAllowed) {
       final permissionGiven=await AwesomeNotifications().requestPermissionToSendNotifications();
       if(permissionGiven){
-        _createNotificationAfterPermission();
+        _createNotificationAfterHavingPermission();
       }
       else{
         _showSnackBar("You denied the permission, now you need to manually add permission on setting to make notification work");
       }
       sharedPreferences.setBool(haveNotificationPermissionKey,permissionGiven);
-      sharedPreferences.setBool(askedUserPermissionKey,true);
     }else{
-      _createNotificationAfterPermission();
+      _createNotificationAfterHavingPermission();
     }
   }
 
-  static Future<dynamic> _showDialogForUserPermission() async{
-    final context=MyApp.scaffoldMessengerState.currentContext;
-    if(context==null) return false;
+  Future<dynamic> _showDialogForUserPermission() async{
+    if(!context.mounted)return;
     return await showDialog(
         context: context,
         builder: (context){
@@ -69,30 +81,23 @@ class NotificationManager{
     );
   }
 
-  static void _manageAskedPermissionScenario(bool haveNotificationPermission) {
-    if(haveNotificationPermission){
-      _createNotificationAfterPermission();
-    }else{
-      _showSnackBar("Open Setting To Add Notification Permission");
-    }
-  }
-
-  static void _showSnackBar(String snackBarMessage) {
-    MyApp.scaffoldMessengerState.currentState?.showSnackBar(
+  void _showSnackBar(String snackBarMessage) {
+    if(!context.mounted)return;
+    ScaffoldMessenger.of(context).showSnackBar(
       OpenSettingSnackBar(
         snackBarMessage:snackBarMessage,
       ),
     );
   }
 
-  static void _createNotificationAfterPermission() {
+  void _createNotificationAfterHavingPermission() {
     AwesomeNotifications().createNotification(
         content: NotificationContent(
-            id: 10,
-            channelKey: 'basic_channel',
-            title: 'Simple Notification',
-            body: 'Simple body',
-            actionType: ActionType.Default
+            id: Random().nextInt(100000),
+            channelKey: channelKey,
+            title: title,
+            body: body,
+            actionType: actionType,
         )
     );
   }
