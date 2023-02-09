@@ -1,11 +1,11 @@
 import 'dart:math';
+import 'package:awesome/utils/local_storage.dart';
 import 'package:awesome/widgets/open_snack_bar_widget.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationSender{
-  static String haveNotificationPermissionKey="haveNotificationPermission";
+
 
   final BuildContext context;
   final String channelKey;
@@ -20,9 +20,7 @@ class NotificationSender{
     this.actionType=ActionType.Default,
   });
   void createNotification() async{
-    final sharedPreferences=await SharedPreferences.getInstance();
-    bool haveNotificationPermission=sharedPreferences.getBool(haveNotificationPermissionKey)??false;
-    if(haveNotificationPermission){
+    if(LocalStorage().haveNotificationPermission()){
       _createNotificationAfterHavingPermission();
     }
     else{
@@ -42,7 +40,6 @@ class NotificationSender{
 
 
   void _userPackageToGrantPackage() async{
-    final sharedPreferences=await SharedPreferences.getInstance();
     bool isAllowed= await AwesomeNotifications().isNotificationAllowed();
     if (!isAllowed) {
       final permissionGiven=await AwesomeNotifications().requestPermissionToSendNotifications();
@@ -52,7 +49,7 @@ class NotificationSender{
       else{
         _showSnackBar("You denied the permission, now you need to manually add permission on setting to make notification work");
       }
-      sharedPreferences.setBool(haveNotificationPermissionKey,permissionGiven);
+      LocalStorage().setHaveNotificationPermission(permissionGiven);
     }else{
       _createNotificationAfterHavingPermission();
     }

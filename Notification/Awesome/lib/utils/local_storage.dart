@@ -6,8 +6,17 @@ class LocalStorage{
   LocalStorage._();
   factory LocalStorage()=>_instance;
 
-  late SharedPreferences sharedPreferences;
-  void init() async{
-    sharedPreferences=await SharedPreferences.getInstance();
+  late SharedPreferences _sharedPreferences;
+  Future<void> init() async{
+    _sharedPreferences=await SharedPreferences.getInstance();
+  }
+
+  static String haveNotificationPermissionKey="haveNotificationPermission";
+  bool haveNotificationPermission(){
+    return _sharedPreferences.getBool(haveNotificationPermissionKey)??false;
+  }
+
+  void setHaveNotificationPermission(bool permission){
+    _sharedPreferences.setBool(haveNotificationPermissionKey, permission);
   }
 }
