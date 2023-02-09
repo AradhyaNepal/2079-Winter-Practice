@@ -1,10 +1,11 @@
 import 'dart:math';
 import 'package:awesome/utils/local_storage.dart';
+import 'package:awesome/utils/notification_setup_controller.dart';
 import 'package:awesome/widgets/open_snack_bar_widget.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
-class NotificationSender{
+class NotificationCreateManager{
 
   static const String permissionDenied="Permission Denied. Cannot Send Notification";
 
@@ -14,8 +15,9 @@ class NotificationSender{
   final String body;
   final ActionType actionType;
 
-  NotificationSender(this.context,{
-    this.channelKey='basic_channel',
+  ///Manages Permissions and styles before creating a notification.
+  NotificationCreateManager(this.context,{
+    this.channelKey=NotificationSetupController.channel1,
     required this.title,
     required this.body,
     this.actionType=ActionType.Default,

@@ -1,12 +1,32 @@
 import 'package:awesome/main.dart';
 import 'package:awesome/screens/navigation_cliked_page/navigation_clicked_page.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/material.dart';
 
 
 ///Note:
 ///You need to use @pragma("vm:entry-point") in each static method to identify
 ///to the Flutter engine that the dart address will be called from native and should be preserved.
-class NotificationController{
+class NotificationSetupController{
+
+  static const String channel1="basic_channel_1";
+
+  static Future<void> initializeAwesomeNotification() async{
+    await AwesomeNotifications().initialize(
+      null,//Null to use default app icon,
+      [
+        NotificationChannel(
+          channelKey: channel1,
+          channelName: 'Basic notifications',
+          channelDescription: 'Notification channel for basic tests',
+          defaultColor: const Color(0xFF9D50DD),
+          ledColor: Colors.white,
+        ),
+      ],
+      debug: true,
+    );
+  }
+
   /// Use this method to detect when a new notification or a schedule is created
   @pragma("vm:entry-point")
   static Future <void> onNotificationCreatedMethod(ReceivedNotification receivedNotification) async {

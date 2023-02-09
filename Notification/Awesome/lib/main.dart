@@ -1,13 +1,12 @@
 import 'package:awesome/screens/navigation_cliked_page/navigation_clicked_page.dart';
 import 'package:awesome/screens/show_notification_page/show_notification_page.dart';
-import 'package:awesome/utils/initialize.dart';
 import 'package:awesome/utils/local_storage.dart';
-import 'package:awesome/utils/notification_controller.dart';
+import 'package:awesome/utils/notification_setup_controller.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
 void main() async{
-  await initializeAwesomeNotification();
+  await NotificationSetupController.initializeAwesomeNotification();
   await LocalStorage().init();
   runApp(const MyApp());
 }
@@ -27,10 +26,10 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     // Only after at least the action method is set, the notification events are delivered
     AwesomeNotifications().setListeners(
-        onActionReceivedMethod:  NotificationController.onActionReceivedMethod,
-        onNotificationCreatedMethod: NotificationController.onNotificationCreatedMethod,
-        onNotificationDisplayedMethod:  NotificationController.onNotificationDisplayedMethod,
-        onDismissActionReceivedMethod:  NotificationController.onDismissActionReceivedMethod
+        onActionReceivedMethod:  NotificationSetupController.onActionReceivedMethod,
+        onNotificationCreatedMethod: NotificationSetupController.onNotificationCreatedMethod,
+        onNotificationDisplayedMethod:  NotificationSetupController.onNotificationDisplayedMethod,
+        onDismissActionReceivedMethod:  NotificationSetupController.onDismissActionReceivedMethod
     );
 
   }
