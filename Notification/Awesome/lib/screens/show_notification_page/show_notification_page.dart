@@ -1,7 +1,9 @@
 
+import 'package:awesome/utils/create_notification.dart';
 import 'package:flutter/material.dart';
 
 class ShowNotificationPage extends StatelessWidget {
+  static const String route="/";
   const ShowNotificationPage({
     super.key,
   });
@@ -20,7 +22,7 @@ class ShowNotificationPage extends StatelessWidget {
           body: Center(
             child: ElevatedButton(
               onPressed: (){
-
+                NotificationManager.createNotification();
               },
               child: const Text(
                 "Show Notification",
