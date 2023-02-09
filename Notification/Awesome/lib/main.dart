@@ -2,7 +2,6 @@ import 'package:awesome/screens/navigation_cliked_page/navigation_clicked_page.d
 import 'package:awesome/screens/show_notification_page/show_notification_page.dart';
 import 'package:awesome/utils/local_storage.dart';
 import 'package:awesome/utils/notification_setup_controller.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
 void main() async{
@@ -12,6 +11,7 @@ void main() async{
 }
 
 class MyApp extends StatefulWidget {
+  //Used For Navigation when Popup Notification is Pressed.
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   const MyApp({super.key});
 
@@ -25,13 +25,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     // Only after at least the action method is set, the notification events are delivered
-    AwesomeNotifications().setListeners(
-        onActionReceivedMethod:  NotificationSetupController.onActionReceivedMethod,
-        onNotificationCreatedMethod: NotificationSetupController.onNotificationCreatedMethod,
-        onNotificationDisplayedMethod:  NotificationSetupController.onNotificationDisplayedMethod,
-        onDismissActionReceivedMethod:  NotificationSetupController.onDismissActionReceivedMethod
-    );
-
+    NotificationSetupController.setListener();
   }
   @override
   Widget build(BuildContext context) {
