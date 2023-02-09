@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class NotificationSender{
 
+  static const String permissionDenied="Permission Denied. Cannot Send Notification";
 
   final BuildContext context;
   final String channelKey;
@@ -33,7 +34,7 @@ class NotificationSender{
     if(userSaidOkay==true){
       _userPackageToGrantPackage();
     }else{
-      _showSnackBar("Notification Permission Not Granted");
+      _showSnackBar(permissionDenied);
     }
   }
 
@@ -47,7 +48,7 @@ class NotificationSender{
         _createNotificationAfterHavingPermission();
       }
       else{
-        _showSnackBar("You denied the permission, now you need to manually add permission on setting to make notification work");
+        _showSnackBar(permissionDenied);
       }
       LocalStorage().setHaveNotificationPermission(permissionGiven);
     }else{
@@ -80,7 +81,8 @@ class NotificationSender{
 
   void _showSnackBar(String snackBarMessage) {
     if(!context.mounted)return;
-    ScaffoldMessenger.of(context).showSnackBar(
+    ScaffoldMessenger.of(context)..removeCurrentSnackBar()
+      ..showSnackBar(
       OpenSettingSnackBar(
         snackBarMessage:snackBarMessage,
       ),
@@ -97,6 +99,7 @@ class NotificationSender{
             actionType: actionType,
         )
     );
+    _showSnackBar("Notification Successfully Send");
   }
 
 }

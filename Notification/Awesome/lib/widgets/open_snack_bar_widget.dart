@@ -5,12 +5,16 @@ class OpenSettingSnackBar extends SnackBar {
   final String snackBarMessage;
   OpenSettingSnackBar({
     required this.snackBarMessage,
-    super.key,
+    Key? key,
   }):super(
-    content: SnackBar(
-      content: Text(
-        snackBarMessage,
+    key: key,
+    content:Text(
+      snackBarMessage,
+      style: const TextStyle(
+        fontWeight: FontWeight.w600,
+        color: Colors.white,
       ),
     ),
+    backgroundColor: Colors.blue,
   );
 }
