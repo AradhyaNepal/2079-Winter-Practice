@@ -1,4 +1,5 @@
 import 'package:awesome/main.dart';
+import 'package:awesome/screens/navigation_cliked_page/navigation_clicked_page.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 
 
@@ -30,8 +31,8 @@ class NotificationController{
     // Your code goes here
 
     // Navigate into pages, avoiding to open the notification details page over another details page already opened
-    MyApp.navigatorKey.currentState?.pushNamedAndRemoveUntil('/notification-page',
-            (route) => (route.settings.name != '/notification-page') || route.isFirst,
+    MyApp.navigatorKey.currentState?.pushNamedAndRemoveUntil(NotificationClickedPage.route,
+            (route) => (route.settings.name != NotificationClickedPage.route) || route.isFirst,
         arguments: receivedAction);
   }
 }

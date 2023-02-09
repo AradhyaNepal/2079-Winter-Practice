@@ -1,3 +1,4 @@
+import 'package:awesome/screens/navigation_cliked_page/navigation_clicked_page.dart';
 import 'package:awesome/screens/show_notification_page/show_notification_page.dart';
 import 'package:awesome/utils/initialize.dart';
 import 'package:awesome/utils/local_storage.dart';
@@ -13,7 +14,6 @@ void main() async{
 
 class MyApp extends StatefulWidget {
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  static final GlobalKey<ScaffoldMessengerState> scaffoldMessengerState = GlobalKey<ScaffoldMessengerState>();
   const MyApp({super.key});
 
   @override
@@ -37,7 +37,6 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      scaffoldMessengerKey: MyApp.scaffoldMessengerState,
       navigatorKey: MyApp.navigatorKey,
       title: 'Awesome Notification',
       theme: ThemeData(
@@ -46,6 +45,7 @@ class _MyAppState extends State<MyApp> {
       initialRoute: ShowNotificationPage.route,
       routes: {
         ShowNotificationPage.route:(context)=>const ShowNotificationPage(),
+        NotificationClickedPage.route:(context)=>const NotificationClickedPage(),
       },
     );
   }

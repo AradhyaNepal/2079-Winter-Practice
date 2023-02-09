@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NotificationClickedPage extends StatelessWidget {
+  static String route="NotificationClickedPage";
   const NotificationClickedPage({Key? key}) : super(key: key);
 
   @override

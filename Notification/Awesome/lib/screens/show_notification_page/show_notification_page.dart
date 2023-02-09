@@ -24,8 +24,9 @@ class ShowNotificationPage extends StatelessWidget {
               onPressed: (){
                 NotificationSender(
                     context,
-                    title: "Hello",
-                    body: "How Are You!"
+                    title: "123",
+                    body: "567",
+                    channelKey: "basic_channel_2"
                 ).createNotification();
               },
               child: const Text(

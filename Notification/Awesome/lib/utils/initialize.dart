@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 
 Future<void> initializeAwesomeNotification() async{
   await AwesomeNotifications().initialize(
-    // set the icon to null if you want to use the default app icon
-      'resource://mipmap/ic_launcher.png',
+    null,//Null to use default app icon,
       [
         NotificationChannel(
             channelGroupKey: 'basic_channel_group',
@@ -13,15 +12,27 @@ Future<void> initializeAwesomeNotification() async{
             channelDescription: 'Notification channel for basic tests',
             defaultColor: const Color(0xFF9D50DD),
             ledColor: Colors.white,
-        )
+        ),
+        NotificationChannel(
+          channelGroupKey: 'basic_channel_group_2',
+          channelKey: 'basic_channel_2',
+          channelName: 'Basic notifications 2',
+          channelDescription: 'Notification channel for basic tests',
+          defaultColor: const Color(0xFF9D50DD),
+          ledColor: Colors.white,
+        ),
       ],
       // Channel groups are only visual and are not required
       channelGroups: [
         NotificationChannelGroup(
             channelGroupKey: 'basic_channel_group',
             channelGroupName: 'Basic group',
-        )
+        ),
+        NotificationChannelGroup(
+            channelGroupKey: 'basic_channel_group_2',
+            channelGroupName: 'Basic group 2',
+        ),
       ],
-      debug: true
+      debug: true,
   );
 }
