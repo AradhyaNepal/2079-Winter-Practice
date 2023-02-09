@@ -1,15 +1,7 @@
-Complete Above 10 projects, then archive this repo, not allowed to add new but allowed to skip few.
+1) All Practice till Chatra end.
 
-1) CICD
-2) Complex UI
-3) Firebase All In One except notification
-4) Flavors
-5) Isolate with no state management
-6) MVVM
-7) Notification
-8) Riverpod
-9) TDD
-10) Dio
-11) Province District City Dropdown (Done)
- 
-Also deadline is Magh 22.
+
+2) Remove (done) ,(failed) at the end.
+
+
+3) You will archive the repo and transfer the failed to another new year repo
