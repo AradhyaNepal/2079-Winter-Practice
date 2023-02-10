@@ -96,32 +96,68 @@ class NotificationCreateManager{
   }
 
   @pragma("vm:entry-point")
-  void _createNotificationAfterHavingPermission() {
-    AwesomeNotifications().createNotification(
-        content: NotificationContent(
-            id: id, // -1 is replaced by a random number
-            channelKey: channelKey,
-            title: title,
-            body: body,
-            bigPicture: 'https://storage.googleapis.com/cms-storage-bucket/d406c736e7c4c57f5f61.png',
-            largeIcon: 'https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png',
-            //'asset://assets/images/balloons-in-sky.jpg',
-            notificationLayout: NotificationLayout.BigPicture,
-            payload: {'notificationId': '1234567890'}),
-        actionButtons: [
-          NotificationActionButton(key: 'REDIRECT', label: 'Redirect'),
-          NotificationActionButton(
-              key: 'REPLY',
-              label: 'Reply Message',
-              requireInputText: true,
-              actionType: ActionType.SilentAction
-          ),
-          NotificationActionButton(
-              key: 'DISMISS',
-              label: 'Dismiss',
-              actionType: ActionType.DismissAction,
-              isDangerousOption: true)
-        ]);
+  void _createNotificationAfterHavingPermission() async{
+    for(int i=0;i<=100;i+=10){
+      if(i==100){
+        await AwesomeNotifications().createNotification(
+            content: NotificationContent(
+                id: 1,
+                channelKey: channelKey,
+                title: "Download Complete",
+                body: body,
+                fullScreenIntent: false,
+                hideLargeIconOnExpand: true,
+                actionType: ActionType.KeepOnTop,
+                bigPicture: 'https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png',
+                largeIcon: 'https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png',
+                //'asset://assets/images/balloons-in-sky.jpg',
+                notificationLayout: NotificationLayout.BigPicture,
+                payload: {'notificationId': '1234567890'}),
+            actionButtons: [
+              NotificationActionButton(
+                requireInputText:true,
+                  key: 'Hello',
+                  label: 'Hello',
+              ),
+            ]);
+        continue;
+
+      }
+      await Future.delayed(Duration(seconds: 1));
+      await AwesomeNotifications().createNotification(
+          content: NotificationContent(
+              id: 1,
+              channelKey: channelKey,
+              title: title,
+              body: body,
+              fullScreenIntent: false,
+              progress: i,
+              locked:true,
+              hideLargeIconOnExpand: true,
+              actionType: ActionType.KeepOnTop,
+              bigPicture: 'https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png',
+              largeIcon: 'https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png',
+              //'asset://assets/images/balloons-in-sky.jpg',
+              notificationLayout: NotificationLayout.ProgressBar,
+              payload: {'notificationId': '1234567890'}),
+          actionButtons: [
+            NotificationActionButton(key: 'REDIRECT', label: 'Redirect'),
+            NotificationActionButton(
+                key: 'REPLY',
+                label: 'Reply Message',
+                requireInputText: true,
+                actionType: ActionType.SilentAction
+            ),
+            NotificationActionButton(
+                key: 'DISMISS',
+                label: 'Dismiss',
+                actionType: ActionType.DismissAction,
+                isDangerousOption: true)
+          ]);
+
+
+    }
+
     _showSnackBar("Notification Successfully Send");
   }
 

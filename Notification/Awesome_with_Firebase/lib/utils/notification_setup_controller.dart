@@ -64,9 +64,31 @@ class NotificationSetupController{
   static Future <void> onActionReceivedMethod(ReceivedAction receivedAction) async {
     // Your code goes here
 
-    // Navigate into pages, avoiding to open the notification details page over another details page already opened
-    MyApp.navigatorKey.currentState?.pushNamedAndRemoveUntil(NotificationClickedPage.route,
-            (route) => (route.settings.name != NotificationClickedPage.route) || route.isFirst,
-        arguments: receivedAction);
+
+    print(receivedAction.buttonKeyPressed);
+    print(receivedAction.payload);
+    if(receivedAction.buttonKeyPressed=="Hello"){
+      AwesomeNotifications().createNotification(
+          content: NotificationContent(
+              id: 1,
+              channelKey: NotificationSetupController.channel1,
+              title: "Hurray",
+              body: "You pressed hello",
+              fullScreenIntent: false,
+              hideLargeIconOnExpand: true,
+              actionType: ActionType.KeepOnTop,
+              bigPicture: 'https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png',
+              largeIcon: 'https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png',
+              //'asset://assets/images/balloons-in-sky.jpg',
+              notificationLayout: NotificationLayout.BigPicture,
+              payload: {'notificationId': '1234567890'}),
+      );
+    }else{
+      // Navigate into pages, avoiding to open the notification details page over another details page already opened
+      MyApp.navigatorKey.currentState?.pushNamedAndRemoveUntil(NotificationClickedPage.route,
+              (route) => (route.settings.name != NotificationClickedPage.route) || route.isFirst,
+          arguments: receivedAction);
+    }
+
   }
 }

@@ -1,7 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-
-import 'package:awesome/main.dart';
 import 'package:awesome/utils/create_notification.dart';
 import 'package:awesome/utils/local_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,7 +7,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
   await Firebase.initializeApp();
-
   print("Handling a background message: ${message.messageId}");
   int messageId=-1;
   try{
@@ -51,7 +47,7 @@ class FirebaseMessagingSetup{
       print("Type ${map.runtimeType}");
       final content=json.decode(map)["content"]["title"];
       NotificationCreateManager(
-        MyApp.navigatorKey.currentState!.context,
+        null,
         title: content,
         body: content,
       ).createNotification();
