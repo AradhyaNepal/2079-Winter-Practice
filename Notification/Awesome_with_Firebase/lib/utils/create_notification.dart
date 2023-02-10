@@ -4,26 +4,33 @@ import 'package:awesome/widgets/open_snack_bar_widget.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
+@pragma("vm:entry-point")
 class NotificationCreateManager{
 
   static const String permissionDenied="Permission Denied. Cannot Send Notification";
 
-  final BuildContext context;
+  final BuildContext? context;
   final String channelKey;
   final String title;
   final String body;
+  final int id;
   final ActionType actionType;
 
   ///Manages Permissions and styles before creating a notification.
+  @pragma("vm:entry-point")
   NotificationCreateManager(this.context,{
     this.channelKey=NotificationSetupController.channel1,
+    this.id=-1,
     required this.title,
     required this.body,
     this.actionType=ActionType.Default,
   });
+
+  @pragma("vm:entry-point")
   void createNotification() async{
+    print("Was here");
     bool isAllowed= await AwesomeNotifications().isNotificationAllowed();
-    if (!isAllowed) {
+    if (!isAllowed && context!=null) {
       _userApprovalForPermission();
     }else{
       _createNotificationAfterHavingPermission();
@@ -54,9 +61,10 @@ class NotificationCreateManager{
 
 
   Future<dynamic> _showDialogForUserPermission() async{
-    if(!context.mounted)return;
+    if(context==null)return;
+    if(!context!.mounted)return;
     return await showDialog(
-        context: context,
+        context: context!,
         builder: (context){
           return AlertDialog(
             title: const Text("Notification Permission"),
@@ -77,8 +85,9 @@ class NotificationCreateManager{
   }
 
   void _showSnackBar(String snackBarMessage) {
-    if(!context.mounted)return;
-    ScaffoldMessenger.of(context)..removeCurrentSnackBar()
+    if(context==null)return;
+    if(!context!.mounted)return;
+    ScaffoldMessenger.of(context!)..removeCurrentSnackBar()
       ..showSnackBar(
       OpenSettingSnackBar(
         snackBarMessage:snackBarMessage,
@@ -86,10 +95,11 @@ class NotificationCreateManager{
     );
   }
 
+  @pragma("vm:entry-point")
   void _createNotificationAfterHavingPermission() {
     AwesomeNotifications().createNotification(
         content: NotificationContent(
-            id: -1, // -1 is replaced by a random number
+            id: id, // -1 is replaced by a random number
             channelKey: channelKey,
             title: title,
             body: body,

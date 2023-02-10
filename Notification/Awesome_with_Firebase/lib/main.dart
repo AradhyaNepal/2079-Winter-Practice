@@ -2,17 +2,23 @@
 
 import 'package:awesome/screens/navigation_cliked_page/navigation_clicked_page.dart';
 import 'package:awesome/screens/show_notification_page/show_notification_page.dart';
+import 'package:awesome/utils/firebase_messaging_setup.dart';
 import 'package:awesome/utils/local_storage.dart';
 import 'package:awesome/utils/notification_setup_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() async{
+  await _initializeBeforeRunApp();
+  runApp(const MyApp());
+}
+
+Future<void> _initializeBeforeRunApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await LocalStorage().init();
   await NotificationSetupController.initializeAwesomeNotification();
-  runApp(const MyApp());
+  await FirebaseMessagingSetup().setupFirebaseMessaging();
 }
 
 class MyApp extends StatefulWidget {
