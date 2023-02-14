@@ -14,6 +14,7 @@ class _DynamicLinkSendPageState extends State<DynamicLinkSendPage> {
   final formKey=GlobalKey<FormState>();
   String name="",phone="";
   String? generatedLink;
+  bool generatingLink=false;
   @override
   Widget build(BuildContext context) {
     final size=MediaQuery.of(context).size;
@@ -53,11 +54,18 @@ class _DynamicLinkSendPageState extends State<DynamicLinkSendPage> {
                     },
                   ),
                   const SizedBox(height: 10,),
+                  generatingLink?
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  ):
                   ElevatedButton(
-                      onPressed: (){
+                      onPressed: ()async{
                         if(formKey.currentState!.validate()){
                           formKey.currentState?.save();
+                          _toggleGeneratingLink();
                           //Todo: Generate Link With Details
+                          generatedLink=await Future.delayed(Duration.zero);
+                          _toggleGeneratingLink();
                         }
                       },
                       child: const Text(
@@ -65,7 +73,10 @@ class _DynamicLinkSendPageState extends State<DynamicLinkSendPage> {
                       ),
                   ),
                   const SizedBox(height: 10,),
-                  GeneratedLink(generatedLink: generatedLink,),
+                  GeneratedLink(
+                    generatedLink: generatedLink,
+                    generatingLink: generatingLink,
+                  ),
                 ],
               ),
             ),
@@ -74,19 +85,27 @@ class _DynamicLinkSendPageState extends State<DynamicLinkSendPage> {
       ),
     );
   }
+
+  void _toggleGeneratingLink() {
+    setState(() {
+      generatingLink=!generatingLink;
+    });
+  }
 }
 
 ///Displays noting if generated link is empty
 class GeneratedLink extends StatelessWidget {
   final String? generatedLink;
+  final bool generatingLink;
   const GeneratedLink({
+    required this.generatingLink,
     required this.generatedLink,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    if(generatedLink==null)return const SizedBox();
+    if(generatedLink==null || generatingLink)return const SizedBox();
     return Column(
       children: [
         Row(
