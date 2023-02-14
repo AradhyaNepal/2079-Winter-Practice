@@ -16,7 +16,6 @@ class DynamicLinkInitializer{
 
   static Future<void> _listenToUpcomingDeeplink() async{
     FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) async {
-      print("Hello 123");
       try{
         handleDynamicLink(dynamicLinkData);
       }catch(e,s){
