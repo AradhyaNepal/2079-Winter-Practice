@@ -4,7 +4,8 @@ import 'package:dynamic_links/utils/dynamic_link_initialize.dart';
 import 'package:flutter/material.dart';
 
 void main() async{
-  await DynamicLinkInitializer().initializeAndListen();
+  WidgetsFlutterBinding.ensureInitialized();
+  await DynamicLinkInitializer.initializeAndListen();
   runApp(const MyApp());
 }
 

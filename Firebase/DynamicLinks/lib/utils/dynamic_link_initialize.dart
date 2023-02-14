@@ -1,44 +1,41 @@
 import 'package:dynamic_links/firebase_options.dart';
-import 'package:dynamic_links/main.dart';
-import 'package:dynamic_links/receive_page/dynamic_link_receive_page.dart';
-import 'package:dynamic_links/send_page/dynamic_link_send_page.dart';
-import 'package:dynamic_links/utils/dynamic_link_generator.dart';
+import 'package:dynamic_links/utils/handle_link.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 
 class DynamicLinkInitializer{
-  static final DynamicLinkInitializer _instance=DynamicLinkInitializer._();
-  DynamicLinkInitializer._();
-  factory DynamicLinkInitializer()=>_instance;
-  Future<void> initializeAndListen() async{
+  static Future<void> initializeAndListen() async{
     await _initializeFirebaseCore();
+    FirebaseAnalytics.instance;
     await _listenToUpcomingDeeplink();
   }
 
-  bool _listeningAlreadySubscribed=false;
-  Future<void> _listenToUpcomingDeeplink() async{
-    if(_listeningAlreadySubscribed) return;
-    _listeningAlreadySubscribed=true;
+
+  static Future<void> _listenToUpcomingDeeplink() async{
+    print("I was here 1");
     FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) async {
+      print("I was here 2");
       try{
-        final paramsMap=dynamicLinkData.link.queryParameters;
-        MyApp.navigatorKey.currentState?.pushNamed(DynamicLinkReceivePage.route,arguments: paramsMap);
+        handleDynamicLink(dynamicLinkData);
       }catch(e,s){
-        debugPrint(e.toString());
+        debugPrint("ERROR-101 $e");
         debugPrint(s.toString());
       }
     },
         onError: (error){
-          debugPrint(error);
+          debugPrint("ERROR-101 $error");
         },
         onDone: (){
-          debugPrint("Done");
+          debugPrint("Done-101");
         }
     );
   }
 
-  Future<void> _initializeFirebaseCore() async {
+
+
+  static Future<void> _initializeFirebaseCore() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );

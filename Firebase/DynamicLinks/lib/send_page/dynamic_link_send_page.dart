@@ -1,4 +1,9 @@
+import 'dart:async';
+
 import 'package:dynamic_links/utils/dynamic_link_generator.dart';
+import 'package:dynamic_links/utils/dynamic_link_initialize.dart';
+import 'package:dynamic_links/utils/handle_link.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
@@ -11,11 +16,42 @@ class DynamicLinkSendPage extends StatefulWidget {
   State<DynamicLinkSendPage> createState() => _DynamicLinkSendPageState();
 }
 
-class _DynamicLinkSendPageState extends State<DynamicLinkSendPage> {
+class _DynamicLinkSendPageState extends State<DynamicLinkSendPage> with WidgetsBindingObserver{
   final formKey=GlobalKey<FormState>();
   String name="",phone="";
   String? generatedLink;
   bool generatingLink=false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed){
+      print("Was here");
+      Timer(
+        const Duration(milliseconds: 1000),
+            () async {
+              final PendingDynamicLinkData? dynamicLinkData = await FirebaseDynamicLinks.instance.getInitialLink();
+              if (dynamicLinkData != null) {
+                handleDynamicLink(dynamicLinkData);
+              }
+        },
+      );
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final size=MediaQuery.of(context).size;
@@ -27,61 +63,58 @@ class _DynamicLinkSendPageState extends State<DynamicLinkSendPage> {
           appBar: AppBar(
             title: const Text("Dynamic Link Send"),
           ),
-          body: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Form(
-              key: formKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                    onSaved: (value)=>name=value??"",
-                    initialValue: "Name",
-                    validator: (value){
-                      if(value!.isEmpty){
-                        return "Enter Name";
+          body: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  onSaved: (value)=>name=value??"",
+                  initialValue: "Name",
+                  validator: (value){
+                    if(value!.isEmpty){
+                      return "Enter Name";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10,),
+                TextFormField(
+                  onSaved: (value)=>phone=value??"",
+                  initialValue: "Phone",
+                  validator: (value){
+                    if(value!.isEmpty){
+                      return "Enter Phone";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10,),
+                generatingLink?
+                const Center(
+                  child: CircularProgressIndicator(),
+                ):
+                ElevatedButton(
+                    onPressed: ()async{
+                      if(formKey.currentState!.validate()){
+                        formKey.currentState?.save();
+                        _toggleGeneratingLink();
+                        generatedLink=await DynamicLinkGenerator().generateDeepLink(
+                            nameValue: name,
+                            phoneValue: phone,
+                        );
+                        _toggleGeneratingLink();
                       }
-                      return null;
                     },
-                  ),
-                  const SizedBox(height: 10,),
-                  TextFormField(
-                    onSaved: (value)=>phone=value??"",
-                    initialValue: "Phone",
-                    validator: (value){
-                      if(value!.isEmpty){
-                        return "Enter Phone";
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 10,),
-                  generatingLink?
-                  const Center(
-                    child: CircularProgressIndicator(),
-                  ):
-                  ElevatedButton(
-                      onPressed: ()async{
-                        if(formKey.currentState!.validate()){
-                          formKey.currentState?.save();
-                          _toggleGeneratingLink();
-                          generatedLink=await DynamicLinkGenerator().generateDeepLink(
-                              nameValue: name,
-                              phoneValue: phone,
-                          );
-                          _toggleGeneratingLink();
-                        }
-                      },
-                      child: const Text(
-                        "Generate"
-                      ),
-                  ),
-                  const SizedBox(height: 10,),
-                  GeneratedLink(
-                    generatedLink: generatedLink,
-                    generatingLink: generatingLink,
-                  ),
-                ],
-              ),
+                    child: const Text(
+                      "Generate"
+                    ),
+                ),
+                const SizedBox(height: 10,),
+                GeneratedLink(
+                  generatedLink: generatedLink,
+                  generatingLink: generatingLink,
+                ),
+              ],
             ),
           ),
         ),
@@ -113,9 +146,11 @@ class GeneratedLink extends StatelessWidget {
       children: [
         Row(
           children: [
-            TextFormField(
-              enabled: false,
-              initialValue: generatedLink,
+            Expanded(
+              child: TextFormField(
+                enabled: false,
+                initialValue: generatedLink,
+              ),
             ),
             const SizedBox(width: 5,),
             IconButton(

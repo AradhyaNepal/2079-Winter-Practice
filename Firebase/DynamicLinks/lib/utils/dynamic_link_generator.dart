@@ -12,12 +12,13 @@ class DynamicLinkGenerator{
       uriPrefix: DynamicLinkGenerator.dynamicLink,
       socialMetaTagParameters: SocialMetaTagParameters(
           title: "Aradhya Practice",
-          imageUrl: Uri.parse("https://static.javatpoint.com/tutorial/firebase/images/dynamic-links-in-firebase2.png")
+          imageUrl: Uri.parse("https://cliply.co/wp-content/uploads/2021/08/472108440_HELLO_STICKER_400.png")
       ),
       androidParameters: AndroidParameters(
         fallbackUrl: Uri.parse("https://www.google.com/"),
         packageName: "com.example.dynamic_links",
       ),
+      iosParameters: const IOSParameters(bundleId: "com.example.dynamic_links"),
     );
     final dynamicLink = await FirebaseDynamicLinks.instance.buildShortLink(dynamicLinkParams);
     return dynamicLink.shortUrl.toString();
