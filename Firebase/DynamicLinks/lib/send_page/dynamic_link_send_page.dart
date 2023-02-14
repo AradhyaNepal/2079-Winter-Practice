@@ -1,7 +1,7 @@
-import 'dart:async';
 
+
+import 'package:dynamic_links/receive_page/dynamic_link_receive_page.dart';
 import 'package:dynamic_links/utils/dynamic_link_generator.dart';
-import 'package:dynamic_links/utils/dynamic_link_initialize.dart';
 import 'package:dynamic_links/utils/handle_link.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
@@ -16,42 +16,26 @@ class DynamicLinkSendPage extends StatefulWidget {
   State<DynamicLinkSendPage> createState() => _DynamicLinkSendPageState();
 }
 
-class _DynamicLinkSendPageState extends State<DynamicLinkSendPage> with WidgetsBindingObserver{
+class _DynamicLinkSendPageState extends State<DynamicLinkSendPage>{
   final formKey=GlobalKey<FormState>();
   String name="",phone="";
   String? generatedLink;
   bool generatingLink=false;
 
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    _getClosedStateInitialData();
   }
 
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed){
-      print("Was here");
-      Timer(
-        const Duration(milliseconds: 1000),
-            () async {
-              final PendingDynamicLinkData? dynamicLinkData = await FirebaseDynamicLinks.instance.getInitialLink();
-              if (dynamicLinkData != null) {
-                handleDynamicLink(dynamicLinkData);
-              }
-        },
-      );
+  void _getClosedStateInitialData()async{
+    await Future.delayed(Duration.zero);
+    final PendingDynamicLinkData? dynamicLinkData = await FirebaseDynamicLinks.instance.getInitialLink();
+    if(dynamicLinkData!=null){
+      handleDynamicLink(dynamicLinkData);
     }
   }
-
-
   @override
   Widget build(BuildContext context) {
     final size=MediaQuery.of(context).size;

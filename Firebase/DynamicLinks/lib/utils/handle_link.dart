@@ -6,7 +6,7 @@ void handleDynamicLink(PendingDynamicLinkData dynamicLinkData) {
   final paramsMap=dynamicLinkData.link.queryParameters;
   MyApp.navigatorKey.currentState?.pushNamedAndRemoveUntil(
     DynamicLinkReceivePage.route,
-        (route) => (route.settings.name != DynamicLinkReceivePage.route) || route.isFirst,
+        (route) => false,
     arguments: paramsMap,
   );
 }
