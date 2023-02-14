@@ -1,3 +1,4 @@
+import 'package:dynamic_links/utils/dynamic_link_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
@@ -63,8 +64,10 @@ class _DynamicLinkSendPageState extends State<DynamicLinkSendPage> {
                         if(formKey.currentState!.validate()){
                           formKey.currentState?.save();
                           _toggleGeneratingLink();
-                          //Todo: Generate Link With Details
-                          generatedLink=await Future.delayed(Duration.zero);
+                          generatedLink=await DynamicLinkGenerator().generateDeepLink(
+                              nameValue: name,
+                              phoneValue: phone,
+                          );
                           _toggleGeneratingLink();
                         }
                       },

@@ -4,13 +4,13 @@ import 'package:dynamic_links/utils/dynamic_link_initialize.dart';
 import 'package:flutter/material.dart';
 
 void main() async{
-  await DynamicLinkInitialize().initialize();
-  runApp(MyApp());
+  await DynamicLinkInitializer().initializeAndListen();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final navigatorKey=GlobalKey<NavigatorState>();
-  MyApp({Key? key}) : super(key: key);
+  static final navigatorKey=GlobalKey<NavigatorState>();
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
